@@ -1,9 +1,11 @@
-# CG
-Solves a linear system *Ax = b* using the **conjugate gradient** method.
+## CG
+Methode der konjugierten Gradienten zur Lösung linearer Gleichungssysteme der Form *Ax = b*
 
-## Input
-Expects *A* to be stored in matrix `[A]`, *b* in `[B]` and the initial guess *x_0* in `[C]`.
+### Eingabe
+- [A]: Matrix *A*
+- [B]: Rechte Seite *b*
+- [C]: Startwert *x<sub>0</sub>*
 
-## Output
-Displays all steps in the calculation with formula and result.
-The operations are directly applied on `[C]`, so the solution *x_n* will also be available in `[C]` afterwards.
+### Ausgabe
+- Alle Iterationsschritte mit Formeln und Zwischenergebnissen
+- [C]: Letzte Iterierte *x<sub>n</sub>*

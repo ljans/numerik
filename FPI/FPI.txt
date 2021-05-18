@@ -1,0 +1,41 @@
+ClrHome
+
+Input "Startwert  xsmall0=",D
+Input "Mantissenl. t=",T
+Input "Iterationen n=",N
+Disp ""
+
+For(K,1,N)
+	B->A
+	C->B
+	D->C
+	
+	{Y1}(D)->D
+
+	round(D,T-1-int(log(D)))->D
+
+	If K=1:Disp "xsmall1="
+	If K=2:Disp "xsmall2="
+	If K=3:Disp "xsmall3="
+	If K=4:Disp "xsmall4="
+	If K=5:Disp "xsmall5="
+
+	Disp D
+	Pause 
+End
+
+Disp ""
+Disp "Konv.ord. p=",ln(abs((C-D)/(B-D)))/ln(abs((B-D)/(A-D)))
+Pause 
+
+Disp ""
+abs(D-C)/abs(C-B)->L
+Disp "Schaetzung L=",L
+Pause 
+
+Disp ""
+Disp "A post. e<=",abs(D-C)L/(1-L)
+Pause 
+
+Disp ""
+Disp "Aitken x*=",(C^2-B*D)/(2*C-D-B)
