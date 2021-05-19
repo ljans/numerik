@@ -5,43 +5,62 @@ Disp "rsmall0=b-Axsmall0=",[J]
 Pause 
 
 det([J]^^T*[J])->R
-Disp "rhosmall0=<rsmall0,rsmall0> =",R>Frac
+Disp "rhosmall0=<rsmall0,rsmall0>"+"=",R>Frac
 Pause 
 
 [J]->[I]
 Disp "dsmall1=rsmall0=",[I]
 Pause 
 
-1->K
 dim([C])->L6
-L6(2)->N
-L6->dim([G])
+L6(1)->N
+If N=1:[[0]]->[G]
+If N=2:[[0][0]]->[G]
+If N=3:[[0][0][0]]->[G]
 
+1->K
 While K<=N and [J]!=[G]
-	Disp "k=",K
 	
 	[A]*[I]->[H]
-	Disp "asmall1=Adsmall1=",[H]
+	If K=1:Disp "asmall1=Adsmall1="
+	If K=2:Disp "asmall2=Adsmall2="
+	If K=3:Disp "asmall3=Adsmall3="
+	Disp [H]
 	Pause 
 	
 	R/det([I]^^T*[H])->T
-	Disp "alphasmall1=rhosmall0/<dsmall1,asmall1> =",T>Frac
+	If K=1:Disp "alphasmall1=rhosmall0/<dsmall1,asmall1>"+"="
+	If K=2:Disp "alphasmall2=rhosmall1/<dsmall2,asmall2>"+"="
+	If K=3:Disp "alphasmall3=rhosmall2/<dsmall3,asmall3>"+"="
+	Disp T>Frac
 	Pause 
 	
 	[C]+T*[I]->[C]
-	Disp "xsmall1=xsmall0+alphasmall1dsmall1=",[C]
+	If K=1:Disp "xsmall1=xsmall0+alphasmall1dsmall1="
+	If K=2:Disp "xsmall2=xsmall1+alphasmall2dsmall2="
+	If K=3:Disp "xsmall3=xsmall2+alphasmall3dsmall3="
+	Disp [C]
 	Pause 
 	
 	[J]-T*[H]->[J]
-	Disp "rsmall1=rsmall0-alphasmall1asmall1=",[J]
+	If K=1:Disp "rsmall1=rsmall0-alphasmall1asmall1="
+	If K=2:Disp "rsmall2=rsmall1-alphasmall2asmall2="
+	If K=3:Disp "rsmall3=rsmall2-alphasmall3asmall3="
+	Disp [J]
 	Pause 
 	
 	det([J]^^T*[J])->S
-	Disp "rhosmall1=<rsmall1,rsmall1> =",S>Frac
+	If K=1:Disp "rhosmall1=<rsmall1,rsmall1>"+"="
+	If K=2:Disp "rhosmall2=<rsmall2,rsmall2>"+"="
+	If K=3:Disp "rhosmall3=<rsmall3,rsmall3>"+"="
+	Disp S>Frac
 	Pause 
 
 	[J]+(S/R)*[I]->[I]
-	Disp "dsmall2=rsmall1+(rhosmall1/rhosmall0)dsmall1=",[I]
+	If K=1:Disp "dsmall2=rsmall1+(rhosmall1/rhosmall0)dsmall1="
+	If K=2:Disp "dsmall3=rsmall2+(rhosmall2/rhosmall1)dsmall2="
+	If K=3:Disp "dsmall4=rsmall3+(rhosmall3/rhosmall2)dsmall3="
+	Disp [I]
 	Pause 
 	
 	S->R
