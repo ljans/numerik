@@ -1,0 +1,59 @@
+ClrHome
+
+dim([C])->L6
+L6(1)->N
+If N=1:[[0]]->[G]
+If N=2:[[0][0]]->[G]
+If N=3:[[0][0][0]]->[G]
+
+[B]-[A][C]->[J]
+Disp "rsmall0=b-Axsmall0=",[J]
+Pause 
+
+0->K
+While [J]!=[G]
+
+	If K=0
+	Then
+		"small0"->Str9
+		"small1"->Str0
+	End
+	If K=1
+	Then
+		"small1"->Str9
+		"small2"->Str0
+	End
+	If K=2
+	Then
+		"small2"->Str9
+		"small3"->Str0
+	End
+	If K=3
+	Then
+		"small3"->Str9
+		"small4"->Str0
+	End
+	If K=4
+	Then
+		"small4"->Str9
+		"small5"->Str0
+	End
+	
+	[A][J]->[I]
+	Disp "a"+Str9+"=Ar"+Str9+"=",[I]
+	Pause 
+	
+	det([J]^^T[J])/det([J]^^T[I])->L
+	Disp "lambda"+Str9+"=<r,r>/<r,a>"+"=",L>Frac
+	Pause 
+	
+	[C]+L*[J]->[C]
+	Disp "x"+Str0+"=x"+Str9+"+lambda"+Str9+"r"+Str9+"=",[C]
+	Pause 
+
+	[J]-L[I]->[J]
+	Disp "r"+Str0+"=r"+Str9+"-lambda"+Str9+"a"+Str9+"=",[J]
+	Pause 
+	
+	K+1->K
+End

@@ -1,5 +1,5 @@
-## CG
-Konjugiertes Gradientenverfahren zur Lösung linearer Gleichungssysteme der Form *Ax = b*
+## GRAD
+Gradientenverfahren zur Lösung linearer Gleichungssysteme der Form *Ax = b*
 
 ### Eingabe
 - [A]: Matrix *A*
