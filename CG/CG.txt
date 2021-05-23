@@ -1,10 +1,12 @@
 ClrHome
 
+" Anzahl der Dimensionen N speichern
 dim([C])->L6
 L6(1)->N
-If N=1:[[0]]->[G]
-If N=2:[[0][0]]->[G]
-If N=3:[[0][0][0]]->[G]
+
+" Nullvektor [G] initialisieren
+[C]->[G]
+Fill(0,[G])
 
 [B]-[A][C]->[J]
 Disp "rsmall0=b-Axsmall0=",[J]
