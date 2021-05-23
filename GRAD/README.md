@@ -9,3 +9,8 @@ Gradientenverfahren zur Lösung linearer Gleichungssysteme der Form *Ax = b*
 ### Ausgabe
 - Alle Iterationsschritte mit Formeln und Zwischenergebnissen
 - [C]: Letzte Iterierte *x<sub>n</sub>*
+
+### Beispiel
+- [A] = [[1,-1],[-1,2]]
+- [B] = [[1][1]]
+- [C] = [[1][0]]
