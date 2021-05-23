@@ -1,5 +1,5 @@
 ## FPI
-Programm zur Durchführung und Analyse von Fixpunktiterationen.
+Programm zur Durchführung von Fixpunktiterationen.
 
 ### Eingabe
 - Y<sub>1</sub>: Fixpunktiteration *&varphi;(x)*
@@ -12,3 +12,8 @@ Programm zur Durchführung und Analyse von Fixpunktiterationen.
 - Schätzung der Lipschitzkonstanten *L*
 - A posteriori Fehlerschätzer *e = ||x<sub>k</sub> - x&ast;||*
 - Aitken-Beschleunigung *x&ast;*
+
+### Beispiel
+- Y<sub>1</sub> = (6+X)^(1/3)
+- x<sub>0</sub> = 6
+- n = 3
