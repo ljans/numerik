@@ -1,0 +1,191 @@
+ClrHome
+
+Menu("Verfahren?","Euler explizit",1,"Euler besser",3,"Heun",2,"Ralston",4,"RK klassisch",5,"ode23",6,"[A],[B],[C]",OK)
+
+" BUTCHER-TABLEAU IN MATRIZEN [A], [B], [C] SPEICHERN
+
+" Explizites Euler-Verfahren
+Lbl 1
+[[0]]->[A]
+[[0]]->[B]
+[[1]]->[C]
+Goto OK
+
+" Verfahren von Heun
+Lbl 2
+[[0][1]]->[A]
+[[0,0][1,0]]->[B]
+[[.5,.5]]->[C]
+Goto OK
+
+" Verbessertes Euler-Verfahren
+Lbl 3
+[[0][.5]]->[A]
+[[0,0][.5,0]]->[B]
+[[0,1]]->[C]
+Goto OK
+
+" Verfahren von Ralston
+Lbl 4
+[[0][2/3]]->[A]
+[[0,0][2/3,0]]->[B]
+[[1/4,3/4]]->[C]
+Goto OK
+
+" Klassisches RK-Verfahren
+Lbl 5
+[[0][.5][.5][1]]->[A]
+[[0,0,0,0][.5,0,0,0][0,.5,0,0][0,0,1,0]]->[B]
+[[1/6,1/3,1/3,1/6]]->[C]
+Goto OK
+
+" Verfahren von Bogacki/Shampine (ode23)
+Lbl 6
+[[0][.5][3/4][1]]->[A]
+[[0,0,0,0][.5,0,0,0][0,3/4,0,0][2/9,1/3,4/9,0]]->[B]
+[[2/9,1/3,4/9,0]]->[C]
+Goto OK
+
+Lbl OK
+
+" STUFE ERMITTELN UND k-VEKTOR IN [J] INITIALISIEREN
+dim([A])->L6
+L6->dim([J])
+
+" KONVERGENZORDNUNG BESTIMMEN
+Menu("Konvergenzord.?","Nein",GO,"Ja",KO)
+Lbl KO
+
+" Pruefe p=1
+ClrHome
+[A]->[I]
+Fill(1,[I])
+det([C][I])->C
+Disp "Sigmac=",C>Frac
+If C!=1
+Then
+	Disp "!=1, p!=1"
+	Pause 
+	Goto GO
+End
+Disp "p=1 OK"
+Pause 
+
+" Pruefe p=2
+ClrHome
+det([C][A])->C
+Disp "Sigmaac=",C>Frac
+If C!=.5
+Then
+	Disp "!=1/2, p!=2"
+	Pause 
+	Goto GO
+End
+Disp "p=2 OK"
+Pause 
+
+" Pruefe p=3
+ClrHome
+0->C
+For(I,1,L6(1))
+	C+[A](I,1)^2[C](1,I)->C
+End
+Disp "Sigmaa^^2c=",C>Frac
+If C!=1/3
+Then
+	Disp "!=1/3, p!=3"
+	Pause 
+	Goto GO
+End
+det([C][B][A])->C
+Disp "SigmaSigmacba=",C>Frac
+If C!=1/6
+Then
+	Disp "!=1/6, p!=3"
+	Pause 
+	Goto GO
+End
+Disp "p=3 OK"
+Pause 
+
+" STARTWERTE BESTIMMEN
+Lbl GO
+ClrHome
+Input "Start tsmall0=",A
+Input "Start ysmall0=",B
+Input "Schritt h=",H
+Input "Schritte m=",M
+
+" ITERATIONSSCHLEIFE
+For(N,1,M)
+	ClrHome
+
+	" Indexsymbole bestimmen
+	If N=1
+	Then
+		"small0"->Str8
+		"small1"->Str9
+	End
+	If N=2
+	Then
+		"small1"->Str8
+		"small2"->Str9
+	End
+	If N=3
+	Then
+		"small2"->Str8
+		"small3"->Str9
+	End
+	If N=4
+	Then
+		"small3"->Str8
+		"small4"->Str9
+	End
+	If N=5
+	Then
+		"small4"->Str8
+		"small5"->Str9
+	End
+
+	" k-VEKTOR FUELLEN
+	For(I,1,L6(1))
+		ClrHome
+
+		" Indexsymbol bestimmen
+		If I=1:"small1"->Str0
+		If I=2:"small2"->Str0
+		If I=3:"small3"->Str0
+		If I=4:"small4"->Str0
+		If I=5:"small5"->Str0
+
+		" t-WERT FUER FUNKTIONSAUSWERTUNG BESTIMMEN
+		A+H[A](I,1)->T
+		Disp "t=t"+Str8+"+a"+Str0+"h=",T>Frac
+
+		" y-WERT FUER FUNKTIONSAUSWERTUNG BESTIMMEN
+		B->Y
+		For(J,1,I-1)
+			Y+H[B](I,J)[J](J,1)->Y
+		End
+		Disp "y=y"+Str8+"+hSigmab"+Str0+"k=",Y>Frac
+
+		" FUNKTIONSAUSWERTUNG
+		{Y1}->[J](I,1)
+		Disp "k"+Str0+"=f(t,y)=",[J](I,1)>Frac
+		Pause 
+		ClrHome
+	End
+
+	" VERFAHRENSFUNKTION BESTIMMEN
+	det([C][J])->P
+	Disp "Phi=",P
+
+	" NEUE ITERIERTE BESTIMMEN
+	A+H->A
+	Disp "t"+Str9+"=",A>Frac
+	B+HP->B
+	Disp "y"+Str9+"=",B>Frac
+
+	" Pause vor der naechsten Iteration
+	If N<M:Pause 
+End
