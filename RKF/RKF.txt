@@ -53,13 +53,20 @@ dim([A])->L6
 L6->dim([J])
 
 " KONVERGENZORDNUNG BESTIMMEN
-Menu("Konvergenzord.?","Nein",GO,"Ja",KO)
+Menu("Konvergenzord.?","Nein",GO,"Ja (skleronom)",KO)
 Lbl KO
+
+" Einsvektor und [H] = diag(a) initialisieren
+[A]->[I]
+Fill(1,[I])
+dim([B])->dim([H])
+Fill(0,[H])
+For(I,1,L6(1))
+	[A](I,1)->[H](I,I)
+End
 
 " Pruefe p=1
 ClrHome
-[A]->[I]
-Fill(1,[I])
 det([C][I])->C
 Disp "Sigmac=",C>Frac
 If C!=1
@@ -86,10 +93,7 @@ Pause
 
 " Pruefe p=3
 ClrHome
-0->C
-For(I,1,L6(1))
-	C+[A](I,1)^2[C](1,I)->C
-End
+det([C][H]^2[I])->C
 Disp "Sigmaa^^2c=",C>Frac
 If C!=1/3
 Then
@@ -106,6 +110,46 @@ Then
 	Goto GO
 End
 Disp "p=3 OK"
+Pause 
+
+" Pruefe p=4
+ClrHome
+det([C][H]^3[I])->C
+Disp "Sigmaa^^3c=",C>Frac
+If C!=1/4
+Then
+	Disp "!=1/4, p!=4"
+	Pause 
+	Goto GO
+End
+det([C][H][B][H][I])->C
+Disp "SigmaSigmacaba=",C>Frac
+If C!=1/8
+Then
+	Disp "!=1/8, p!=4"
+	Pause 
+	Goto GO
+End
+Disp "Weiter ..."
+Pause 
+ClrHome
+det([C][B][H]^2[I])->C
+Disp "SigmaSigmacba^^2=",C>Frac
+If C!=1/12
+Then
+	Disp "!=1/12, p!=4"
+	Pause 
+	Goto GO
+End
+det([C][B]^2[A])->C
+Disp "SigmaSigmaSigmacbba=",C>Frac
+If C!=1/24
+Then
+	Disp "!=1/24, p!=4"
+	Pause 
+	Goto GO
+End
+Disp "p=4 OK"
 Pause 
 
 " STARTWERTE BESTIMMEN

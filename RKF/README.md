@@ -10,5 +10,5 @@ Runge-Kutta-Fehlberg-Verfahren zur Lösung von Anfangswertproblemen der Form *y'
 - Optional: Butcher-Tableau *a=*[A], *B*=[B], *c*=[C]
 
 ### Ausgabe
-- Optional: Bedingungsgleichungen der Konvergenzordnung für *p=1,2,3*
+- Optional: Bedingungsgleichungen der Konvergenzordnung für *p = 1, 2, 3, 4*
 - Alle Iterationsschritte mit Formeln und Zwischenergebnissen
