@@ -1,6 +1,6 @@
 ClrHome
 
-Menu("Verfahren?","Euler explizit",1,"Euler besser",3,"Heun",2,"Ralston",4,"RK klassisch",5,"ode23",6,"[A],[B],[C]",OK)
+Menu("Verfahren?","[A],[B],[C]",OK,"Euler explizit",1,"Euler besser",3,"Heun",2,"Ralston",4,"RK klassisch",5,"ode23",6)
 
 " BUTCHER-TABLEAU IN MATRIZEN [A], [B], [C] SPEICHERN
 
@@ -52,117 +52,31 @@ Lbl OK
 dim([A])->L6
 L6->dim([J])
 
-" KONVERGENZORDNUNG BESTIMMEN
-Menu("Konvergenzord.?","Nein",GO,"Ja (skleronom)",KO)
-Lbl KO
-
-" Einsvektor und [H] = diag(a) initialisieren
-[A]->[I]
-Fill(1,[I])
-dim([B])->dim([H])
-Fill(0,[H])
-For(I,1,L6(1))
-	[A](I,1)->[H](I,I)
-End
-
-" Pruefe p=1
+" MODUS WAEHLEN
+Lbl MO
 ClrHome
-det([C][I])->C
-Disp "Sigmac=",C>Frac
-If C!=1
-Then
-	Disp "!=1, p!=1"
-	Pause 
-	Goto GO
-End
-Disp "p=1 OK"
-Pause 
+0->F
+Menu("Modus?","Runge-Kutta",RK,"RK+Fehlberg",FE,"Konvergenzord.",KO,"Ende",EN)
 
-" Pruefe p=2
-ClrHome
-det([C][A])->C
-Disp "Sigmaac=",C>Frac
-If C!=.5
-Then
-	Disp "!=1/2, p!=2"
-	Pause 
-	Goto GO
-End
-Disp "p=2 OK"
-Pause 
-
-" Pruefe p=3
-ClrHome
-det([C][H]^2[I])->C
-Disp "Sigmaa^^2c=",C>Frac
-If C!=1/3
-Then
-	Disp "!=1/3, p!=3"
-	Pause 
-	Goto GO
-End
-det([C][B][A])->C
-Disp "SigmaSigmacba=",C>Frac
-If C!=1/6
-Then
-	Disp "!=1/6, p!=3"
-	Pause 
-	Goto GO
-End
-Disp "p=3 OK"
-Pause 
-
-" Pruefe p=4
-ClrHome
-det([C][H]^3[I])->C
-Disp "Sigmaa^^3c=",C>Frac
-If C!=1/4
-Then
-	Disp "!=1/4, p!=4"
-	Pause 
-	Goto GO
-End
-det([C][H][B][H][I])->C
-Disp "SigmaSigmacaba=",C>Frac
-If C!=1/8
-Then
-	Disp "!=1/8, p!=4"
-	Pause 
-	Goto GO
-End
-Disp "Weiter ..."
-Pause 
-ClrHome
-det([C][B][H]^2[I])->C
-Disp "SigmaSigmacba^^2=",C>Frac
-If C!=1/12
-Then
-	Disp "!=1/12, p!=4"
-	Pause 
-	Goto GO
-End
-det([C][B]^2[A])->C
-Disp "SigmaSigmaSigmacbba=",C>Frac
-If C!=1/24
-Then
-	Disp "!=1/24, p!=4"
-	Pause 
-	Goto GO
-End
-Disp "p=4 OK"
-Pause 
+" FEHLBERG-FLAG SETZEN
+Lbl FE
+1->F
 
 " STARTWERTE BESTIMMEN
-Lbl GO
-ClrHome
+Lbl RK
 Input "Start tsmall0=",A
 Input "Start ysmall0=",B
 Input "Schritt h=",H
 Input "Schritte m=",M
+ClrHome
+
+" ERSTES k1 BESTIMMEN
+A->T
+B->Y
+{Y1}->[J](1,1)
 
 " ITERATIONSSCHLEIFE
 For(N,1,M)
-	ClrHome
 
 	" Indexsymbole bestimmen
 	If N=1
@@ -191,9 +105,13 @@ For(N,1,M)
 		"small5"->Str9
 	End
 
+	" k1 AUSGEBEN
+	Disp "ksmall1=f(t"+Str8+",y"+Str8+")=",[J](1,1)>Frac
+	Pause 
+	ClrHome
+
 	" k-VEKTOR FUELLEN
-	For(I,1,L6(1))
-		ClrHome
+	For(I,2,L6(1))
 
 		" Indexsymbol bestimmen
 		If I=1:"small1"->Str0
@@ -204,7 +122,7 @@ For(N,1,M)
 
 		" t-WERT FUER FUNKTIONSAUSWERTUNG BESTIMMEN
 		A+H[A](I,1)->T
-		Disp "t=t"+Str8+"+a"+Str0+"h=",T>Frac
+		Disp "t=t"+Str8+"+a"+Str0+"h=",T
 
 		" y-WERT FUER FUNKTIONSAUSWERTUNG BESTIMMEN
 		B->Y
@@ -222,14 +140,119 @@ For(N,1,M)
 
 	" VERFAHRENSFUNKTION BESTIMMEN
 	det([C][J])->P
-	Disp "Phi=",P
+	Disp "Phi=ck=",P>Frac
 
-	" NEUE ITERIERTE BESTIMMEN
-	A+H->A
-	Disp "t"+Str9+"=",A>Frac
-	B+HP->B
-	Disp "y"+Str9+"=",B>Frac
+	" NAECHSTER ZEITSCHRITT
+	A+H->T
+	B+HP->Y
+	{Y1}->K
+	Disp "t"+Str9+"=t"+Str8+"+h=",T
+	Disp "y"+Str9+"=y"+Str8+"+hPhi=",Y>Frac
+	Pause 
+	ClrHome
 
-	" Pause vor der naechsten Iteration
-	If N<M:Pause 
+	" FEHLBERG-TRICK
+	If F=1
+	Then
+		Disp "Fehlberg-Trick:"
+		det([D]augment([J]^^T,[[K]])^^T)->P
+		B+HP->Z
+		Disp "Phi=dk=",P>Frac
+		Disp "z"+Str9+"=y"+Str8+"+hPhi=",Z>Frac
+		Disp "e=|1-z"+Str9+"/y"+Str9+"|",abs(1-Z/Y)>Frac
+		Pause 
+		ClrHome
+	End
+
+	" STARTWERT UND k1 UPDATEN
+	T->A
+	Y->B
+	K->[J](1,1)
 End
+Goto MO
+
+" EINHEITSVEKTOR UND [H] = diag(a) INITIALISIEREN
+Lbl KO
+[A]->[I]
+Fill(1,[I])
+dim([B])->dim([H])
+Fill(0,[H])
+For(I,1,L6(1))
+	[A](I,1)->[H](I,I)
+End
+
+" PRUEFE p=1
+det([C][I])->C
+Disp "Sigmac=",C>Frac
+If C!=1
+Then
+	Pause "!=1, p!=1"
+	Goto MO
+End
+Disp "p=1 OK",""
+
+" PRUEFE p=2
+det([C][A])->C
+Disp "Sigmaac=",C>Frac
+If C!=.5
+Then
+	Pause "!=1/2, p!=2" 
+	Goto MO
+End
+Pause "p=2 OK"
+ClrHome
+
+" PRUEFE p=3
+det([C][H]^2[I])->C
+Disp "Sigmaa^^2c=",C>Frac
+If C!=1/3
+Then
+	Pause "!=1/3, p!=3"
+	Goto MO
+End
+det([C][B][A])->C
+Disp "SigmaSigmacba=",C>Frac
+If C!=1/6
+Then
+	Pause "!=1/6, p!=3"
+	Goto MO
+End
+Pause "p=3 OK"
+ClrHome
+
+" PRUEFE p=4
+det([C][H]^3[I])->C
+Disp "Sigmaa^^3c=",C>Frac
+If C!=1/4
+Then
+	Pause "!=1/4, p!=4"
+	Goto MO
+End
+det([C][H][B][H][I])->C
+Disp "SigmaSigmacaba=",C>Frac
+If C!=1/8
+Then
+	Pause "!=1/8, p!=4"
+	Goto MO
+End
+Pause "Weiter..."
+ClrHome
+det([C][B][H]^2[I])->C
+Disp "SigmaSigmacba^^2=",C>Frac
+If C!=1/12
+Then
+	Pause "!=1/12, p!=4"
+	Goto MO
+End
+det([C][B]^2[A])->C
+Disp "SigmaSigmaSigmacbba=",C>Frac
+If C!=1/24
+Then
+	Pause "!=1/24, p!=4" 
+	Goto MO
+End
+Pause "p=4 OK"
+Goto MO
+
+" ENDE
+Lbl EN
