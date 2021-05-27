@@ -3,57 +3,94 @@ ClrHome
 " ITERATIONSZAEHLER INITIALISIEREN
 0->K
 
-" MATRIXDIMENSION BESTIMMEN UND D, L, R INITIALISIEREN
-dim([A])->L6
+" MATRIXDIMENSION N BESTIMMEN UND D, L, R INITIALISIEREN
+dim([A])->L6:L6(1)->N
 [A]->[H]
 [A]->[I]
 [A]->[J]
 
 " D, L, R BESTIMMEN
-For(I,1,L6(1))
-	For(J,1,L6(2))
+For(I,1,N)
+	For(J,1,N)
 		If I!=J:0->[H](I,J)
 		If I<=J:0->[I](I,J)
 		If I>=J:0->[J](I,J)
 	End
 End
 
-" VERFAHREN WAEHLEN
-Lbl VW
+" VERFAHREN WAEHLEN, ENTSPRECHENDES M und d BERECHNEN
+Lbl MV
 Menu("Verfahren?","Gausharps-Seidel",GS,"Jacobi",J)
-
-" M UND d BERECHNEN
-
-" Jacobi
-Lbl J
-[H]^^-1->[G]
-~[G]*([I]+[J])->[F]
-[G][B]->[G]
-Disp "M=~D^^-1(L+R)=",[F]
-Pause 
-ClrHome
-Disp "d=D^^-1b=",[G]
-Pause 
-ClrHome
-Goto IT
 
 " Gauss-Seidel
 Lbl GS
 ([H]+[I])^^-1->[G]
 ~[G][J]->[F]
 [G][B]->[G]
-Disp "M=~(D+L)^^-1R=",[F]
-Pause 
+Disp "M=~(D+L)^^-1R="
+Pause [F]
 ClrHome
 Disp "d=(D+L)^^-1b=",[G]
+Goto L
+
+" Jacobi
+Lbl J
+[H]^^-1->[G]
+~[G]*([I]+[J])->[F]
+[G][B]->[G]
+Disp "M=~D^^-1(L+R)="
+Pause [F]
+ClrHome
+Disp "d=D^^-1b=",[G]
+Goto L
+
+" ZEILEN- UND SPALTENSUMMENNORM BERECHNEN
+Lbl L
 Pause 
 ClrHome
-Goto IT
+0->Z
+0->S
+For(I,1,N)
 
-" ITERATION
+	" Zwischensummen
+	0->C
+	0->D
+	For(J,1,N)
+		C+abs([F](I,J))->C
+		D+abs([F](J,I))->D
+	End
+
+	" Neue maximale Werte
+	If C>Z:C->Z
+	If D>S:D->S
+End
+
+" KONVERGENZTEST MIT ZEILENSUMMENNORM
+Disp "|M|small0small0=",Z>Frac
+If Z<1
+Then
+	Pause "=L<1 geeignet"
+	Z->L
+	0->P
+	Goto IT
+End
+Disp ">=1 ungeeignet"
+
+" KONVERGENZTEST MIT SPALTENSUMMENNORM
+Disp "|M|small1=",S>Frac
+If S<1
+Then
+	Pause "=L<1 geeignet"
+	S->L
+	1->P
+	Goto IT
+End
+Disp ">=1 ungeeignet"
+Goto EN
+
+" ITERATIONSINDEX BESTIMMEN
 Lbl IT
-
-" Index bestimmen
+ClrHome
 If K=0
 Then
 	"small0"->Str9
@@ -81,12 +118,35 @@ Then
 End
 
 " NEUE ITERIERTE BERECHNEN
+K+1->K
+[C]->[D]
 [F][C]+[G]->[C]
 Disp "x"+Str0+"=Mx"+Str9+"+d=",[C]
-K+1->K
+
+" AENDERUNG IN P-NORM BERECHNEN
+0->D
+For(I,1,N)
+	abs([C](I,1)-[D](I,1))->C
+	If P=0 and C>D:C->D
+	If P=1:D+C->D
+End
+
+" MODUS WAEHLEN
+Lbl MM
 Pause 
 ClrHome
+Menu("Modus?","Iterieren",IT,"A priori",PR,"A posteriori",PO,"Wechseln",MV,"Ende",EN)
 
-" NAECHSTE AKTION WAEHLEN
-Menu("Fortsetzen?","Ja",IT,"Anderes",VW,"Ende",EN)
+" A PRIORI FEHLERSCHAETZUNG
+Lbl PR
+Input "Toleranz epsilon=",T
+Disp "","Schritte k>=",ln((1-L)T/D)/ln(L)+K-1
+Goto MM
+
+" A POSTERIORI FEHLERSCHAETZUNG
+Lbl PO
+Disp "|x"+Str0+"-x*|"+"<=","L/(1-L)|x"+Str0+"-x"+Str9+"|=",DL/(1-L)
+Goto MM
+
+" ENDE
 Lbl EN
