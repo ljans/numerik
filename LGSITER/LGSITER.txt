@@ -74,7 +74,8 @@ Then
 	0->P
 	Goto IT
 End
-Disp ">=1 ungeeignet"
+Pause ">=1 ungeeignet"
+ClrHome
 
 " KONVERGENZTEST MIT SPALTENSUMMENNORM
 Disp "|M|small1=",S>Frac
@@ -85,8 +86,12 @@ Then
 	1->P
 	Goto IT
 End
-Disp ">=1 ungeeignet"
-Goto EN
+Pause ">=1 ungeeignet"
+ClrHome
+
+" EINGABE DER SPEKTRALNORM
+Input "|M|small2=",L
+2->P
 
 " ITERATIONSINDEX BESTIMMEN
 Lbl IT
@@ -129,7 +134,9 @@ For(I,1,N)
 	abs([C](I,1)-[D](I,1))->C
 	If P=0 and C>D:C->D
 	If P=1:D+C->D
+	If P=2:D+C^2->D
 End
+If P=2:sqrt(D)->D
 
 " MODUS WAEHLEN
 Lbl MM
@@ -140,7 +147,7 @@ Menu("Modus?","Iterieren",IT,"A priori",PR,"A posteriori",PO,"Wechseln",MV,"Ende
 " A PRIORI FEHLERSCHAETZUNG
 Lbl PR
 Input "Toleranz epsilon=",T
-Disp "","Schritte k>=",ln((1-L)T/D)/ln(L)+K-1
+Disp "Schritte k>=",ln((1-L)T/D)/ln(L)+K-1
 Goto MM
 
 " A POSTERIORI FEHLERSCHAETZUNG
