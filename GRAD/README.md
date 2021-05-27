@@ -1,5 +1,5 @@
 ## GRAD
-Gradientenverfahren zur Lösung linearer Gleichungssysteme der Form *Ax = b*
+Gewöhnliches und konjugiertes Gradientenverfahren zur Lösung linearer Gleichungssysteme der Form *Ax = b*
 
 ### Eingabe
 - [A]: Matrix *A*
