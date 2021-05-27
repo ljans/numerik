@@ -1,0 +1,92 @@
+ClrHome
+
+" ITERATIONSZAEHLER INITIALISIEREN
+0->K
+
+" MATRIXDIMENSION BESTIMMEN UND D, L, R INITIALISIEREN
+dim([A])->L6
+[A]->[H]
+[A]->[I]
+[A]->[J]
+
+" D, L, R BESTIMMEN
+For(I,1,L6(1))
+	For(J,1,L6(2))
+		If I!=J:0->[H](I,J)
+		If I<=J:0->[I](I,J)
+		If I>=J:0->[J](I,J)
+	End
+End
+
+" VERFAHREN WAEHLEN
+Lbl VW
+Menu("Verfahren?","Gausharps-Seidel",GS,"Jacobi",J)
+
+" M UND d BERECHNEN
+
+" Jacobi
+Lbl J
+[H]^^-1->[G]
+~[G]*([I]+[J])->[F]
+[G][B]->[G]
+Disp "M=~D^^-1(L+R)=",[F]
+Pause 
+ClrHome
+Disp "d=D^^-1b=",[G]
+Pause 
+ClrHome
+Goto IT
+
+" Gauss-Seidel
+Lbl GS
+([H]+[I])^^-1->[G]
+~[G][J]->[F]
+[G][B]->[G]
+Disp "M=~(D+L)^^-1R=",[F]
+Pause 
+ClrHome
+Disp "d=(D+L)^^-1b=",[G]
+Pause 
+ClrHome
+Goto IT
+
+" ITERATION
+Lbl IT
+
+" Index bestimmen
+If K=0
+Then
+	"small0"->Str9
+	"small1"->Str0
+End
+If K=1
+Then
+	"small1"->Str9
+	"small2"->Str0
+End
+If K=2
+Then
+	"small2"->Str9
+	"small3"->Str0
+End
+If K=3
+Then
+	"small3"->Str9
+	"small4"->Str0
+End
+If K=4
+Then
+	"small4"->Str9
+	"small5"->Str0
+End
+
+" NEUE ITERIERTE BERECHNEN
+[F][C]+[G]->[C]
+Disp "x"+Str0+"=Mx"+Str9+"+d=",[C]
+K+1->K
+Pause 
+ClrHome
+
+" NAECHSTE AKTION WAEHLEN
+Menu("Fortsetzen?","Ja",IT,"Anderes",VW,"Ende",EN)
+Lbl EN
