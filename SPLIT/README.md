@@ -1,5 +1,5 @@
-## LGSITER
-Programm zur iterativen Lösung linearer Gleichungssysteme der Form *Ax=b*.
+## SPLIT
+Splitting-Verfahren zur iterativen Lösung linearer Gleichungssysteme der Form *Ax=b*.
 Zur Auswahl stehen die folgenden Verfahren:
 - Gauß-Seidel / Einzelschritt
 - Jacobi / Gesamtschritt
