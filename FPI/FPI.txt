@@ -1,34 +1,94 @@
 ClrHome
 
-Input "Startwert  xsmall0=",D
-Input "Iterationen n=",N
-Disp ""
+Input "Startwert xsmall0=",D
+ClrHome
 
-For(K,1,N)
-	B->A
-	C->B
-	D->C
-	
-	{Y1}(D)->D
+" ITERATIONSZAEHLER
+0->K
+Lbl IT
+K+1->K
 
-	If K=1:Disp "xsmall1="
-	If K=2:Disp "xsmall2="
-	If K=3:Disp "xsmall3="
-	If K=4:Disp "xsmall4="
-	If K=5:Disp "xsmall5="
-
-	Disp D
-	Pause 
+" INDIZES BESTIMMEN
+If K=1
+Then
+	"small0"->Str9
+	"small1"->Str0
+End
+If K=2
+Then
+	"small0"->Str8
+	"small1"->Str9
+	"small2"->Str0
+End
+If K=3
+Then
+	"small1"->Str8
+	"small2"->Str9
+	"small3"->Str0
+End
+If K=4
+Then
+	"small2"->Str8
+	"small3"->Str9
+	"small4"->Str0
+End
+If K=5
+Then
+	"small3"->Str8
+	"small4"->Str9
+	"small5"->Str0
 End
 
-Disp "","Konv.ord. p=",ln(abs((C-D)/(B-D)))/ln(abs((B-D)/(A-D)))
+" LETZTE 3 ITERIERTE DURCHROTIEREN
+B->A
+C->B
+D->C
+
+" NEUE ITERIERTE BESTIMMEN
+{Y1}(D)->D
+
+" ITERIERTE AUSGEBEN
+Disp "x"+Str0+"=Phi(x"+Str9+")=",D
 Pause 
 
+" AKTIONSMENUE
+Lbl MA
+ClrHome
+Menu("Aktion?","Iterieren",IT,"p berechnen",KO,"L schaetzen",LS,"L eingeben",LE,"A priori",PR,"A posteriori",PO,"Aitken-Beschl.",AB)
+
+" KONVERGENZORDNUNG BERECHNEN
+Lbl KO
+Disp "p=",ln(abs((C-D)/(B-D)))/ln(abs((B-D)/(A-D)))
+Pause 
+Goto MA
+
+" L SCHAETZEN
+Lbl LS
 abs(D-C)/abs(C-B)->L
-Disp "","Schaetzung L=",L
+Disp "L=","|x"+Str0+"-x"+Str9+"|/|x"+Str9+"-x"+Str8+"|=",L
 Pause 
+Goto MA
 
-Disp "","A post. e<=",abs(D-C)L/(1-L)
+" L EINGEBEN
+Lbl LE
+Input "L=",L
+Goto MA
+
+" A PRIORI FEHLERSCHAETZUNG
+Lbl PR
+Input "Toleranz epsilon=",T
+Disp "Schritte k>=",ln((1-L)T/D)/ln(L)+K-1
 Pause 
+Goto MA
 
-Disp "","Aitken x*=",(C^2-B*D)/(2*C-D-B)
+" A POSTERIORI FEHLERSCHAETZUNG
+Lbl PO
+Disp "|x"+Str0+"-x*|"+"<=","L/(1-L)|x"+Str0+"-x"+Str9+"|=",abs(D-C)L/(1-L)
+Pause 
+Goto MA
+
+" AITKEN-BESCHLEUNIGUNG
+Lbl AB
+Disp "x*=",(C^2-B*D)/(2*C-D-B)
+Pause 
+Goto MA
