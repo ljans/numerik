@@ -1,39 +1,80 @@
-## SPLIT
-Splitting-Verfahren zur iterativen Lösung linearer Gleichungssysteme der Form *Ax=b*.
+# SPLIT
+Löst lineare Gleichungssysteme der Form *Ax = b* durch Splitting der Matrix *A* &in; &reals;<sup>*n*&times;*n*</sup> in *A = D + L + R*.
 Zur Auswahl stehen die folgenden Verfahren:
+
 - Gauß-Seidel / Einzelschritt
+- SOR (Successive Over-Relaxation)
 - Jacobi / Gesamtschritt
 
-### Eingabe
-- [A]: Matrix *A*
-- [B]: Rechte Seite *b*
-- [C]: Startwert *x<sub>0</sub>*
 
-### Ausgabe
-- Berechnung der Iterationsmatrix *M*
-- Berechnung des Vektors *d*
-- Konvergenztest und Berechnung der Lipschitz-Konstanten *L* in Zeilensummennorm *|| &middot; ||<sub>&infin;</sub>* oder Spaltensummennorm *|| &middot; ||<sub>1</sub>*
-- Erste Iterierte *x<sub>1</sub> = Mx<sub>0</sub> + d*
+## Setup
+Folgende Felder können im Voraus belegt oder beim Start des Programms eingegeben werden:
 
-### Modus: Iteration
-Zusätzliche Ausgabe
-- Nächste Iterierte *x<sub>k+1</sub> = Mx<sub>k</sub> + d*
+Feld  | Belegung
+----- | --------
+`[A]` | Matrix *A*
+`[B]` | Rechte Seite *b*
+`[C]` | Startwert *x<sub>0</sub>*
 
-### Modus: A priori
-#### Zusätzliche Eingabe
-- Toleranz *||x<sub>k</sub> - x&ast;|| &leq; &varepsilon;*
 
-#### Zusätzliche Ausgabe
-- Mindestanzahl an Schritten *k* zum Erreichen der Toleranz
+## Ablauf
+- Das Programm fordert zur Wahl eines Verfahrens auf.
+- Die Berechnung der Matrizen *M* und *N* wird ausgegeben.
+- Um die Konvergenz des Verfahrens nachzuweisen, wird eine Lipschitz-Konstante *L < 1* gesucht.
+  1. Zunächst wird getestet, ob die Zeilensummennorm *||M||<sub>&infin;</sub>* geeignet ist.
+  1. Falls nicht, wird die Spaltensummennorm *||M||<sub>1</sub>* getestet.
+  1. Sind beide ungeeignet, fordert das Programm zur Eingabe der Spektralnorm *||M||<sub>2</sub>* auf.
+- Die Berechnung der ersten Iterierten *x<sub>1</sub> = Mx<sub>0</sub> + Nb* wird ausgegeben.
+- Das Programm fordert zur Wahl einer der im Folgenden beschriebenen Aktionen auf.
 
-### Modus: A posteriori
-#### Zusätzliche Ausgabe
-- Fehlerschätzung *||x<sub>k</sub> - x&ast;||* auf Grundlage der letzten beiden Iterierten *x<sub>k</sub>* und *x<sub>k-1</sub>*
 
-### Modus: Wechseln
-Ermöglicht, das Verfahren zwischen Iterationsschritten zu wechseln.
+### Aktion: iterieren
+- Die Berechnung der nächsten Iterierten *x<sub>k+1</sub> = Mx<sub>k</sub> + Nb* wird ausgegeben.
 
-### Beispiel
-- `[A] = [[100,1,1,1,1][1,100,1,1,1][1,1,100,1,1][1,1,1,100,1][1,1,1,1,100]]`
-- `[B] = [[96][97][98][99][100]]`
-- `[C] = [[1][1][1][1][1]]`
+
+### Aktion: a-priori
+- Das Programm fordert zur Eingabe einer Toleranz *&varepsilon; &geq; ||x<sub>k</sub> - x&ast;||* auf.
+- Die mindestens nötige Anzahl an Iterationsschritten *k* zum Erreichen der Toleranz wird ausgegeben.
+
+
+### Aktion: a-posteriori
+- Eine Fehlerschätzung für *||x<sub>k</sub> - x&ast;||* auf Grundlage der letzten beiden Iterierten *x<sub>k</sub>* und *x<sub>k-1</sub>* wird ausgegeben.
+
+
+### Aktion: wechseln
+- Ermöglicht, das Verfahren zwischen Iterationsschritten zu wechseln.
+
+
+### Aktion: beenden
+- Beendet das Programm
+
+
+## Beispielsetup
+- *A*=`[[100,1,1,1,1][1,100,1,1,1][1,1,100,1,1][1,1,1,100,1][1,1,1,1,100]]`
+- *b*=`[[96][97][98][99][100]]`
+- *x<sub>0</sub>*=`[[1][1][1][1][1]]`
+- *&varepsilon;*=0.0001
+
+
+## Arbeitsspeicher
+Feld   | Belegung
+------ | --------
+`C`    | Zwischensumme
+`D`    | Zwischenrechnungen
+`E`    | Toleranz *&epsilon;*
+`I`    | Schleifenindex
+`J`    | Schleifenindex
+`K`    | Iteration *k*
+`N`    | Dimension *n*
+`P`    | Index der *p*-Norm *&#124;&#124; &middot; &#124;&#124;<sub>p</sub>*
+`S`    | Spaltensumme
+`W`    | Relaxationsparameter *&omega;*
+`Z`    | Zeilensumme
+`[D]`  | Aktuelle Iterierte *x<sub>k</sub>*
+`[E]`  | Letzte Iterierte *x<sub>k-1</sub>*
+`[F]`  | Iterationsmatrix *M*
+`[G]`  | Matrix *N*
+`[H]`  | Diagonalmatrix *D*
+`[I]`  | Linke obere Dreiecksmatrix *L*
+`[J]`  | Rechte obere Dreiecksmatrix *R*
+`∟DIM` | Dimensionsliste {*n,n*}

@@ -1,15 +1,33 @@
-ClrHome
-
-" ITERATIONSZAEHLER INITIALISIEREN
+" SETUP
 0->K
+Lbl MS
+ClrHome
+Menu("Setup","A eingeben",IA,"b eingeben",IB,"xsmall0 eingeben",IC,"starten",GO)
 
-" MATRIXDIMENSION N BESTIMMEN UND D, L, R INITIALISIEREN
-dim([A])->L6:L6(1)->N
+" Matrix eingeben
+Lbl IA
+Input "Matrix A=",[A]
+Goto MS
+
+" Rechte Seite eingeben
+Lbl IB
+Input "Rechte Seite b=",[B]
+Goto MS
+
+" Startwert eingeben
+Lbl IC
+Input "Startwert xsmall0=",[C]
+Goto MS
+
+" INITIALISIERUNG
+Lbl GO
+[C]->[D]
+dim([A])->|LDIM:|LDIM(1)->N
+
+" D, L, R BESTIMMEN
 [A]->[H]
 [A]->[I]
 [A]->[J]
-
-" D, L, R BESTIMMEN
 For(I,1,N)
 	For(J,1,N)
 		If I!=J:0->[H](I,J)
@@ -18,35 +36,42 @@ For(I,1,N)
 	End
 End
 
-" VERFAHREN WAEHLEN, ENTSPRECHENDES M und d BERECHNEN
+" VERFAHREN WAEHLEN
 Lbl MV
-Menu("Verfahren?","Gausharps-Seidel",GS,"Jacobi",J)
+1->W
+Menu("Verfahren?","Gausharps-Seidel",GS,"SOR 0<w<2",IW,"Jacobi",J)
+
+" Successive Over-Relaxation
+Lbl IW
+Input "Relaxation w=",W
+ClrHome
 
 " Gauss-Seidel
 Lbl GS
-([H]+[I])^^-1->[G]
-~[G][J]->[F]
-[G][B]->[G]
-Disp "M=~(D+L)^^-1R="
+W([H]+W[I])^^-1->[G]
+(~1/W[G])((W-1)[H]+W[J])->[F]
+If W=1:Disp "M=~(D+L)^^-1R="
+If W!=1:Disp "M=~(D+wL)^^-1","*((w-1)D+wR)="
 Pause [F]
 ClrHome
-Disp "d=(D+L)^^-1b=",[G]
+If W=1:Disp "N=(D+L)^^-1="
+If W!=1:Disp "N=w(D+wL)^^-1="
+Pause [G]
 Goto L
 
 " Jacobi
 Lbl J
 [H]^^-1->[G]
 ~[G]*([I]+[J])->[F]
-[G][B]->[G]
 Disp "M=~D^^-1(L+R)="
 Pause [F]
 ClrHome
-Disp "d=D^^-1b=",[G]
+Disp "N=D^^-1="
+Pause [G]
 Goto L
 
 " ZEILEN- UND SPALTENSUMMENNORM BERECHNEN
 Lbl L
-Pause 
 ClrHome
 0->Z
 0->S
@@ -66,7 +91,7 @@ For(I,1,N)
 End
 
 " KONVERGENZTEST MIT ZEILENSUMMENNORM
-Disp "|M|small0small0=",Z>Frac
+Disp "Zeilen |M|small0small0=",Z>Frac
 If Z<1
 Then
 	Pause "=L<1 geeignet"
@@ -78,7 +103,7 @@ Pause ">=1 ungeeignet"
 ClrHome
 
 " KONVERGENZTEST MIT SPALTENSUMMENNORM
-Disp "|M|small1=",S>Frac
+Disp "Spalten |M|small1=",S>Frac
 If S<1
 Then
 	Pause "=L<1 geeignet"
@@ -90,7 +115,7 @@ Pause ">=1 ungeeignet"
 ClrHome
 
 " EINGABE DER SPEKTRALNORM
-Input "|M|small2=",L
+Input "Spektral |M|small2=",L
 2->P
 
 " ITERATIONSINDEX BESTIMMEN
@@ -124,36 +149,36 @@ End
 
 " NEUE ITERIERTE BERECHNEN
 K+1->K
-[C]->[D]
-[F][C]+[G]->[C]
-Disp "x"+Str0+"=Mx"+Str9+"+d=",[C]
+[D]->[E]
+[F][D]+[G][B]->[D]
+Disp "x"+Str0+"=Mx"+Str9+"+Nb=",[D]
 
 " AENDERUNG IN P-NORM BERECHNEN
 0->D
 For(I,1,N)
-	abs([C](I,1)-[D](I,1))->C
+	abs([D](I,1)-[E](I,1))->C
 	If P=0 and C>D:C->D
 	If P=1:D+C->D
 	If P=2:D+C^2->D
 End
 If P=2:sqrt(D)->D
 
-" MODUS WAEHLEN
-Lbl MM
+" AKTION WAEHLEN
+Lbl MA
 Pause 
 ClrHome
-Menu("Modus?","Iterieren",IT,"A priori",PR,"A posteriori",PO,"Wechseln",MV,"Ende",EN)
+Menu("Aktion?","iterieren",IT,"a-priori",PR,"a-posteriori",PO,"wechseln",MV,"beenden",E)
 
-" A PRIORI FEHLERSCHAETZUNG
+" A-PRIORI-FEHLERSCHAETZUNG
 Lbl PR
-Input "Toleranz epsilon=",T
-Disp "Schritte k>=",ln((1-L)T/D)/ln(L)+K-1
-Goto MM
+Input "Toleranz epsilon=",E
+Disp "Schritte k>=",ln((1-L)E/D)/ln(L)+K-1
+Goto MA
 
-" A POSTERIORI FEHLERSCHAETZUNG
+" A-POSTERIORI-FEHLERSCHAETZUNG
 Lbl PO
 Disp "|x"+Str0+"-x*|"+"<=","L/(1-L)|x"+Str0+"-x"+Str9+"|=",DL/(1-L)
-Goto MM
+Goto MA
 
 " ENDE
-Lbl EN
+Lbl E
