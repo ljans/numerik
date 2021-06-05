@@ -1,16 +1,46 @@
-## GRAD
-Gewöhnliches und konjugiertes Gradientenverfahren zur Lösung linearer Gleichungssysteme der Form *Ax = b*
+# GRAD
+Gewöhnliches und konjugiertes Gradientenverfahren zur iterativen Lösung linearer Gleichungssysteme der Form *Ax = b* mit *A* &in; &reals;<sup>*n*&times;*n*</sup>.
 
-### Eingabe
-- [A]: Matrix *A*
-- [B]: Rechte Seite *b*
-- [C]: Startwert *x<sub>0</sub>*
 
-### Ausgabe
-- Alle Iterationsschritte mit Formeln und Zwischenergebnissen
-- [C]: Letzte Iterierte *x<sub>n</sub>*
+## Setup
+Folgende Felder können im Voraus belegt oder beim Start des Programms eingegeben werden:
 
-### Beispiel
-- [A] = [[1,-1],[-1,2]]
-- [B] = [[1][1]]
-- [C] = [[1][0]]
+Feld  | Belegung
+----- | --------
+`[A]` | Matrix *A*
+`[B]` | Rechte Seite *b*
+`[C]` | Startwert *x<sub>0</sub>*
+
+
+## Ablauf
+Am Anfang jedes Iterationsschritts fordert das Programm zur Wahl zwischen gewöhnlichem und konjugiertem Gradientenverfahren auf und führt dann durch die folgenden Berechnungen:
+- Residuum
+- Suchrichtung
+- Line search
+- Neue Iterierte
+
+
+## Beispielsetup
+- A=`[[1,-1][-1,2]]`
+- b=`[[1][1]]`
+- x<sub>0</sub>=`[[1][0]]`
+
+
+## Arbeitsspeicher
+Feld   | Belegung
+------ | -------
+`C`    | 0 = gewöhnlich, 1 = konjugiert
+`K`    | Iteration *k*
+`N`    | Dimension *n*
+`Q`    | Line search Parameter *&alpha;* bzw. *&lambda;*
+`R`    | Vorheriges Skalarprodukt des Residuums
+`S`    | Aktuelles Skalarprodukt des Residuums
+`[D]`  | Arbeitsvektor *x*
+`[G]`  | Nullvektor
+`[H]`  | Produkt von Matrix *A* und Suchrichtung
+`[I]`  | Suchrichtung *d*
+`[J]`  | Residuum *r*
+`Str8` | Vorheriger Index *<sub>k-1</sub>*
+`Str9` | Aktueller Index *<sub>k</sub>*
+`Str0` | Nächster Index *<sub>k+1</sub>*
+`∟DIM` | Dimensionsliste {*n,n*}

@@ -1,127 +1,109 @@
+Lbl MS
 ClrHome
+Menu("Setup","A eingeben",IA,"b eingeben",IB,"xsmall0 eingeben",IC,"starten",GO)
 
-" ANZAHL N DER KOMPONENTEN SPEICHERN
-dim([C])->L6:L6(1)->N
 
-" NULLVEKTOR [G] INITIALISIEREN
-[C]->[G]
+Lbl IA
+Input "Matrix A=",[A]
+Goto MS
+
+
+Lbl IB
+Input "Rechte Seite b=",[B]
+Goto MS
+
+
+Lbl IC
+Input "Startwert xsmall0=",[C]
+Goto MS
+
+
+" Arbeitsvektor und Dimension
+Lbl GO
+[C]->[D]
+dim([D])->|LDIM:|LDIM(1)->N
+
+
+" Nullvektor
+[D]->[G]
 Fill(0,[G])
 
-" KONJUGIERT-FLAG SETZEN
+
+" Startindizes
+0->K
+"small0"->Str9
+"small1"->Str0
+
+
+Lbl IT
 0->C
-Menu("Verfahren?","Konjugiert",C,"Normal",N)
+Menu("Verfahren?","konjugiert",C,"gewoehnlich",G,"beenden",E)
 Lbl C
 1->C
-Lbl N
+Lbl G
 
-" ERSTES RESIDUUM
-[B]-[A][C]->[J]
-Disp "rsmall0=b-Axsmall0=",[J]
-Pause 
 
-" ERSTES RESIDUUM-SKALARPRODUKT
-det([J]^^T[J])->R
-If C=1
-Then
-	Disp "rhosmall0=<rsmall0,rsmall0>"+"=",R>Frac
-	Pause 
+Disp "Residuum:"
+If K=0:Then
+	[B]-[A][D]->[J]
+	Disp "r"+Str9+"=b-Ax"+Str9+"="
+Else
+	[J]-Q[H]->[J]
+	If C=1:Disp "r"+Str9+"=r"+Str8+"-alpha"+Str9+"a"+Str9+"="
+	If C=0:Disp "r"+Str9+"=r"+Str8+"-lambda"+Str8+"a"+Str8+"="
 End
-
-" ERSTE SUCHRICHTUNG
-[J]->[I]
-If C=1
-Then
-	Disp "dsmall1=rsmall0=",[I]
-	Pause 
-End
-
-" INDIZES BESTIMMEN
-1->K
-Lbl IT
-If K=1
-Then
-	"small0"->Str8
-	"small1"->Str9
-	"small2"->Str0
-End
-If K=2
-Then
-	"small1"->Str8
-	"small2"->Str9
-	"small3"->Str0
-End
-If K=3
-Then
-	"small2"->Str8
-	"small3"->Str9
-	"small4"->Str0
-End
-If K=4
-Then
-	"small3"->Str8
-	"small4"->Str9
-	"small5"->Str0
-End
-If K=5
-Then
-	"small4"->Str8
-	"small5"->Str9
-	"small6"->Str0
-End
-
-" MATRIX-VEKTOR-PRODUKT SPEICHERN
-[A][I]->[H]
-If C=1:Disp "a"+Str9+"=Ad"+Str9+"="
-If C=0:Disp "a"+Str8+"=Ar"+Str8+"="
-Pause [H]
-
-" MINIMIERUNGSSCHRITT
-R/det([I]^^T[H])->Q
-If C=1:Disp "alpha"+Str9+"=rho"+Str8+"/<d"+Str9+",a"+Str9+">"+"="
-If C=0:Disp "lambda"+Str8+"=<r,r>/<r,a>"+"="
-Pause Q>Frac
-
-" VERBESSERUNG DES MINIMUMS
-[C]+Q[I]->[C]
-If C=1:Disp "x"+Str9+"=x"+Str8+"+alpha"+Str9+"d"+Str9+"="
-If C=0:Disp "x"+Str9+"=x"+Str8+"+lambda"+Str8+"r"+Str8+"="
-Pause [C]
-
-" RESIDUUM AKTUALISIEREN
-[J]-Q[H]->[J]
-If C=1:Disp "r"+Str9+"=r"+Str8+"-alpha"+Str9+"a"+Str9+"="
-If C=0:Disp "r"+Str9+"=r"+Str8+"-lambda"+Str8+"a"+Str8+"="
-Disp [J]
+Pause [J]
 If [J]=[G]:Return
-Pause 
-
-" RESIDUUM-SKALARPRODUKT SPEICHERN
-det([J]^^T[J])->S
-If C=1
-Then
-	Disp "rho"+Str9+"=<r"+Str9+",r"+Str9+">"+"=",S>Frac
-	Pause 
+R->S
+det([J]^^T[J])->R
+If C=1:Then
+	Disp "rho"+Str9+"=<r"+Str9+",r"+Str9+">"+"="
+	Pause R>Frac
 End
+ClrHome
 
-" SUCHRICHTUNG KORRIGIEREN
-If C=1:[J]+(S/R)[I]->[I]
-If C=0:[J]->[I]
-If C=1
-Then
-	Disp "d"+Str0+"=r"+Str9+"+(rho"+Str9+"/rho"+Str8+")d"+Str9+"=",[I]
-	Pause 
+
+If C=1:Disp "Suchrichtung:"
+If K=0:Then
+	[J]->[I]
+	If C=1:Disp "d"+Str0+"=r"+Str9+"="
+Else
+	If C=1:[J]+(R/S)[I]->[I]
+	If C=0:[J]->[I]
+	If C=1:Disp "d"+Str0+"=r"+Str9+"+(rho"+Str9+"/rho"+Str8+")d"+Str9+"="
 End
+If C=1:Pause [I]
+ClrHome
 
-" NAECHSTER SCHRITT
-S->R
+
+Disp "Line search:"
+[A][I]->[H]
+If C=1:Disp "a"+Str0+"=Ad"+Str0+"="
+If C=0:Disp "a"+Str9+"=Ar"+Str9+"="
+Pause [H]
+R/det([I]^^T[H])->Q
+If C=1:Disp "alpha"+Str0+"=rho"+Str9+"/<d"+Str0+",a"+Str0+">"+"="
+If C=0:Disp "lambda"+Str9+"=<r,r>/<r,a>"+"="
+Pause Q>Frac
+ClrHome
+
+
+Disp "Neue Iterierte:"
+[D]+Q[I]->[D]
+If C=1:Disp "x"+Str0+"=x"+Str9+"+alpha"+Str0+"d"+Str0+"="
+If C=0:Disp "x"+Str0+"=x"+Str9+"+lambda"+Str9+"r"+Str9+"="
+Pause [D]
+ClrHome
+
+
+" Naechster Schritt
 K+1->K
-
-" MODUS WAEHLEN
-0->C
-Menu("Fortsetzen?","Konjugiert",CC,"Normal",IT,"Ende",EN)
-Lbl CC
-1->C
+Str9->Str8
+Str0->Str9
+If K=1:"small2"->Str0
+If K=2:"small3"->Str0
+If K=3:"small4"->Str0
+If K=4:"small5"->Str0
+If K>4:""->Str0
 Goto IT
-
-" ENDE
-Lbl EN
+Lbl E
