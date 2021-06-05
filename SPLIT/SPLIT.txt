@@ -1,5 +1,6 @@
 " SETUP
 0->K
+"small0"->Str0
 Lbl MS
 ClrHome
 Menu("Setup","A eingeben",IA,"b eingeben",IB,"xsmall0 eingeben",IC,"starten",GO)
@@ -92,8 +93,7 @@ End
 
 " KONVERGENZTEST MIT ZEILENSUMMENNORM
 Disp "Zeilen |M|small0small0=",Z>Frac
-If Z<1
-Then
+If Z<1:Then
 	Pause "=L<1 geeignet"
 	Z->L
 	0->P
@@ -104,8 +104,7 @@ ClrHome
 
 " KONVERGENZTEST MIT SPALTENSUMMENNORM
 Disp "Spalten |M|small1=",S>Frac
-If S<1
-Then
+If S<1:Then
 	Pause "=L<1 geeignet"
 	S->L
 	1->P
@@ -118,37 +117,19 @@ ClrHome
 Input "Spektral |M|small2=",L
 2->P
 
-" ITERATIONSINDEX BESTIMMEN
+" ITERATIONSSCHRITT
 Lbl IT
+K+1->K
+Str0->Str9
+If K=1:"small1"->Str0
+If K=2:"small2"->Str0
+If K=3:"small3"->Str0
+If K=4:"small4"->Str0
+If K=5:"small5"->Str0
+If K>5:""->Str0
 ClrHome
-If K=0
-Then
-	"small0"->Str9
-	"small1"->Str0
-End
-If K=1
-Then
-	"small1"->Str9
-	"small2"->Str0
-End
-If K=2
-Then
-	"small2"->Str9
-	"small3"->Str0
-End
-If K=3
-Then
-	"small3"->Str9
-	"small4"->Str0
-End
-If K=4
-Then
-	"small4"->Str9
-	"small5"->Str0
-End
 
 " NEUE ITERIERTE BERECHNEN
-K+1->K
 [D]->[E]
 [F][D]+[G][B]->[D]
 Disp "x"+Str0+"=Mx"+Str9+"+Nb=",[D]

@@ -34,7 +34,7 @@ Feld  | Belegung
 
 ### Aktion: a-priori
 - Das Programm fordert zur Eingabe einer Toleranz *&varepsilon; &geq; ||x<sub>k</sub> - x&ast;||* auf.
-- Die mindestens nötige Anzahl an Iterationsschritten *k* zum Erreichen der Toleranz wird ausgegeben.
+- Eine hinreichende Anzahl an Iterationsschritten *k* zum Erreichen der Toleranz wird ausgegeben.
 
 
 ### Aktion: a-posteriori
@@ -50,10 +50,10 @@ Feld  | Belegung
 
 
 ## Beispielsetup
-- *A*=`[[100,1,1,1,1][1,100,1,1,1][1,1,100,1,1][1,1,1,100,1][1,1,1,1,100]]`
-- *b*=`[[96][97][98][99][100]]`
-- *x<sub>0</sub>*=`[[1][1][1][1][1]]`
-- *&varepsilon;*=0.0001
+- A=`[[100,1,1,1,1][1,100,1,1,1][1,1,100,1,1][1,1,1,100,1][1,1,1,1,100]]`
+- b=`[[96][97][98][99][100]]`
+- x<sub>0</sub>=`[[1][1][1][1][1]]`
+- &varepsilon;=0.0001
 
 
 ## Arbeitsspeicher
@@ -71,10 +71,12 @@ Feld   | Belegung
 `W`    | Relaxationsparameter *&omega;*
 `Z`    | Zeilensumme
 `[D]`  | Aktuelle Iterierte *x<sub>k</sub>*
-`[E]`  | Letzte Iterierte *x<sub>k-1</sub>*
+`[E]`  | Vorherige Iterierte *x<sub>k-1</sub>*
 `[F]`  | Iterationsmatrix *M*
 `[G]`  | Matrix *N*
 `[H]`  | Diagonalmatrix *D*
 `[I]`  | Linke obere Dreiecksmatrix *L*
 `[J]`  | Rechte obere Dreiecksmatrix *R*
+`Str9` | Vorheriger Index *<sub>k-1</sub>*
+`Str0` | Aktueller Index *<sub>k</sub>*
 `∟DIM` | Dimensionsliste {*n,n*}
