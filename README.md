@@ -1,6 +1,6 @@
 # Numerik
 In diesem Projekt werden Programme für die Taschenrechner TI-83 Plus und TI-84 Plus zur Lösung numerischer Fragestellungen gesammelt.
-Zur Verfügung stehen die folgenden Verfahren, sortiert nach Anwendungsbereich:
+Verfügbar sind die folgenden Verfahren, sortiert nach Anwendungsbereich:
 
 - Iterative Lösung linearer Gleichungssysteme
   - [Splitting-Verfahren](SPLIT)
@@ -9,9 +9,16 @@ Zur Verfügung stehen die folgenden Verfahren, sortiert nach Anwendungsbereich:
   - [Gradientenverfahren](GRAD)
     - Gewöhnliches Gradientenverfahren
     - Konjugiertes Gradientenverfahren
-- Iterative Lösung nichtlinearer Gleichungen
+- Iterative Lösung von (nicht-linearen) Gleichungen
   - [Fixpunktiteration](FPI)
-- Iterative Lösung gewöhnlicher Differentialgleichungen
-  - Anfangswertprobleme
-    - [Explizite Runge-Kutta-Fehlberg-Verfahren](RKF)
- 
+- Iterative Lösung gewöhnlicher Differenzialgleichungen
+  - [Runge-Kutta-Fehlberg-Verfahren](RKF) (für Anfangswertprobleme)
+    - Explizites Euler-Verfahren
+    - Verfahren von Heun
+    - Verbessertes Euler-Verfahren
+    - Verfahren von Ralston
+    - Klassisches Runge-Kutta-Verfahren
+    - Verfahren von Bogacki-Shampine (ode23)
+    - Jedes explizite Verfahren mit Butcher-Tableau
+- Sonstiges
+  - [Ermittlung von Matrix-Eigenwerten](EIGNWERT)

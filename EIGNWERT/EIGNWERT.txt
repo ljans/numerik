@@ -1,0 +1,34 @@
+ClrHome
+Menu("Setup","A eingeben",EA,"Starten",GO)
+
+" A EINGEBEN
+Lbl EA
+Input "A=",[A]
+
+" DIMENSION BESTIMMEN UND PASSENDE EINHEITSMATRIX ERZEUGEN
+Lbl GO
+dim([A])->|LDIM
+identity(|LDIM(1))->[I]
+
+" CHARAKTERISTISCHES POLYNOM ANZEIGEN
+String>Equ("det([A]-X[I])",{Y0})
+FnOff 
+FnOn 0
+
+" ZAEHLER INITIALISIEREN
+0->K
+Lbl RE
+ClrHome
+
+" TIPP EINGEBEN UND GLEICHUNG LOESEN
+Input 
+solve({Y0},X,X,{~|E2,|E2})->L
+Disp "lambda=",L>Frac
+
+" WIEDERHOLEN, BIS ALLE EIGENWERTE GEFUNDEN WURDEN
+K+1->K
+If K<|LDIM(1)
+Then
+	Pause 
+	Goto RE
+End
