@@ -7,8 +7,8 @@ Input "A=",[A]
 
 " DIMENSION BESTIMMEN UND PASSENDE EINHEITSMATRIX ERZEUGEN
 Lbl GO
-dim([A])->|LDIM
-identity(|LDIM(1))->[I]
+dim([A])->|LDIM:|LDIM(1)->N
+identity(N)->[I]
 
 " CHARAKTERISTISCHES POLYNOM ANZEIGEN
 String>Equ("det([A]-X[I])",{Y0})
@@ -27,8 +27,7 @@ Disp "lambda=",L>Frac
 
 " WIEDERHOLEN, BIS ALLE EIGENWERTE GEFUNDEN WURDEN
 K+1->K
-If K<|LDIM(1)
-Then
+If K<N:Then
 	Pause 
 	Goto RE
 End

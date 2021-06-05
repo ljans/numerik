@@ -20,6 +20,6 @@ Verfügbar sind die folgenden Verfahren, sortiert nach Anwendungsbereich:
     - Verfahren von Ralston
     - Klassisches Runge-Kutta-Verfahren
     - Verfahren von Bogacki-Shampine (ode23)
-    - Jedes explizite Verfahren mit Butcher-Tableau
+    - Jedes weitere explizite Verfahren unter Angabe seines Butcher-Tableaus
 - Sonstiges
-  - **[Ermittlung von Matrix-Eigenwerten](EIGNWERT)**
+  - **[Bestimmung von Matrix-Eigenwerten](EIGNWERT)**
