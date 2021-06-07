@@ -1,94 +1,77 @@
+Lbl MS
 ClrHome
+Menu("Setup","\Phi eingeben",IP,"starten",GO,"L eingeben",IL)
 
+
+Lbl IP
+Input "\Phi(X)=",Str0
+String>Equ(Str0,{Y1})
+Goto MS
+
+
+Lbl IL
+Input "Lipsc"+"hitz L=",L
+Goto MS
+
+
+Lbl GO
 Input "Startwert xsmall0=",D
 ClrHome
 
-" ITERATIONSZAEHLER
+
+" Indizes bestimmen
 0->K
+"small0"->Str0
 Lbl IT
 K+1->K
+Str9->Str8
+Str0->Str9
+If K=1:"small1"->Str0
+If K=2:"small2"->Str0
+If K=3:"small3"->Str0
+If K=4:"small4"->Str0
+If K=5:"small5"->Str0
 
-" INDIZES BESTIMMEN
-If K=1
-Then
-	"small0"->Str9
-	"small1"->Str0
-End
-If K=2
-Then
-	"small0"->Str8
-	"small1"->Str9
-	"small2"->Str0
-End
-If K=3
-Then
-	"small1"->Str8
-	"small2"->Str9
-	"small3"->Str0
-End
-If K=4
-Then
-	"small2"->Str8
-	"small3"->Str9
-	"small4"->Str0
-End
-If K=5
-Then
-	"small3"->Str8
-	"small4"->Str9
-	"small5"->Str0
-End
 
-" LETZTE 3 ITERIERTE DURCHROTIEREN
+" Werte rotieren und neue Iterierte berechnen
 B->A
 C->B
 D->C
-
-" NEUE ITERIERTE BESTIMMEN
 {Y1}(D)->D
-
-" ITERIERTE AUSGEBEN
 Disp "x"+Str0+"=Phi(x"+Str9+")=",D
-Pause 
 
-" AKTIONSMENUE
+
 Lbl MA
+Pause 
 ClrHome
-Menu("Aktion?","Iterieren",IT,"p berechnen",KO,"L schaetzen",LS,"L eingeben",LE,"A priori",PR,"A posteriori",PO,"Aitken-Beschl.",AB)
+Menu("Aktion?","iterieren",IT,"a-priori",PR,"a-posteriori",PO,"beschleunigen",AB,"L berechnen",L,"p berechnen",P,"beenden",E)
 
-" KONVERGENZORDNUNG BERECHNEN
-Lbl KO
-Disp "p=",ln(abs((C-D)/(B-D)))/ln(abs((B-D)/(A-D)))
-Pause 
-Goto MA
 
-" L SCHAETZEN
-Lbl LS
-abs(D-C)/abs(C-B)->L
-Disp "L=","|x"+Str0+"-x"+Str9+"|/|x"+Str9+"-x"+Str8+"|=",L
-Pause 
-Goto MA
-
-" L EINGEBEN
-Lbl LE
-Input "L=",L
-Goto MA
-
-" A PRIORI FEHLERSCHAETZUNG
 Lbl PR
-Input "Toleranz epsilon=",T
-Disp "Schritte k>=",ln((1-L)T/D)/ln(L)+K-1
-Pause 
+Input "Toleranz epsilon=",E
+Disp "Schritte k>=",ln((1-L)E/abs(D-C))/ln(L)+K-1
 Goto MA
 
-" A POSTERIORI FEHLERSCHAETZUNG
+
 Lbl PO
 Disp "|x"+Str0+"-x*|"+"<=","L/(1-L)|x"+Str0+"-x"+Str9+"|=",abs(D-C)L/(1-L)
-Pause 
 Goto MA
 
-" AITKEN-BESCHLEUNIGUNG
+
 Lbl AB
-Disp "x*=",(C^2-B*D)/(2*C-D-B)
-Pause 
+Disp "Aitken x=",(C^2-B*D)/(2*C-D-B)
 Goto MA
+
+
+Lbl L
+abs(D-C)/abs(C-B)->L
+Disp "Lipsc"+"hitz L=","|x"+Str0+"-x"+Str9+"|/|x"+Str9+"-x"+Str8+"|=",L
+Goto MA
+
+
+Lbl P
+Disp "Konvergenzor. p=",ln(abs((C-D)/(B-D)))/ln(abs((B-D)/(A-D)))
+Goto MA
+
+
+Lbl E
