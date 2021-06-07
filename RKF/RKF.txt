@@ -1,258 +1,305 @@
+Lbl MS
 ClrHome
+Menu("Setup","f eingeben",IF,"Verf. waehlen",MV,"a eingeben",IA,"B eingeben",IB,"c eingeben",IC,"d eingeben",ID,"starten",GO)
 
-Menu("Verfahren?","[A],[B],[C]",OK,"Euler explizit",1,"Euler besser",3,"Heun",2,"Ralston",4,"RK klassisch",5,"ode23",6)
 
-" BUTCHER-TABLEAU IN MATRIZEN [A], [B], [C] SPEICHERN
+Lbl IF
+Input "f(T,Y)=",Str0
+String>Equ(Str0,{Y1})
+Goto MS
 
-" Explizites Euler-Verfahren
+
+Lbl IA
+Input "Vektor a=",[A]
+ClrHome
+Disp "Vektor a="
+Pause [A]>Frac
+Goto MS
+
+
+Lbl IB
+Input "Matrix B=",[B]
+ClrHome
+Disp "Matrix B="
+Pause [B]>Frac
+Goto MS
+
+
+Lbl IC
+Input "Vektor c=",[C]
+ClrHome
+Disp "Vektor c="
+Pause [C]>Frac
+Goto MS
+
+
+Lbl ID
+Input "Vektor d=",[D]
+ClrHome
+Disp "Vektor d="
+Pause [D]>Frac
+Goto MS
+
+
+Lbl MV
+Menu("Verfahren?","Euler1[|>]Heun2",1,"Euler2",2,"BS2[|>]Ralston3",3,"Heun2[|>]SSPRK3",4,"RK4 klassisch",5,"RK4 3/8-Regel",6,"Anderes",MS)
+
+
+" Euler-Verfahren im Verfahren von Heun
 Lbl 1
 [[0]]->[A]
 [[0]]->[B]
 [[1]]->[C]
-Goto OK
+[[.5,.5]]->[D]
+Goto K
 
-" Verfahren von Heun
+
+" Mittelpunktsregel
 Lbl 2
-[[0][1]]->[A]
-[[0,0][1,0]]->[B]
-[[.5,.5]]->[C]
-Goto OK
-
-" Verbessertes Euler-Verfahren
-Lbl 3
 [[0][.5]]->[A]
 [[0,0][.5,0]]->[B]
 [[0,1]]->[C]
-Goto OK
+Goto K
 
-" Verfahren von Ralston
+
+" Verfahren von Bogacki-Shampine im Verfahren von Ralston
+Lbl 3
+[[0][.5][.75]]->[A]
+[[0,0,0][.5,0,0][0,.75,0]]->[B]
+[[2/9,1/3,4/9]]->[C]
+[[7/24,1/4,1/3,1/8]]->[D]
+Goto K
+
+
+" Verfahren von Heun im Strong Stability Preserving Runge-Kutta-Verfahren
 Lbl 4
-[[0][2/3]]->[A]
-[[0,0][2/3,0]]->[B]
-[[1/4,3/4]]->[C]
-Goto OK
+[[0][1][.5]]->[A]
+[[0,0,0][1,0,0][.25,.25,0]]->[B]
+[[1/6,1/6,4/6]]->[C]
+[[.5,.5,0,0]]->[D]
+Goto K
+
 
 " Klassisches RK-Verfahren
 Lbl 5
 [[0][.5][.5][1]]->[A]
 [[0,0,0,0][.5,0,0,0][0,.5,0,0][0,0,1,0]]->[B]
 [[1/6,1/3,1/3,1/6]]->[C]
-Goto OK
+Goto K
 
-" Verfahren von Bogacki/Shampine (ode23)
+
+" 3/8-Regel
 Lbl 6
-[[0][.5][3/4][1]]->[A]
-[[0,0,0,0][.5,0,0,0][0,3/4,0,0][2/9,1/3,4/9,0]]->[B]
-[[2/9,1/3,4/9,0]]->[C]
-Goto OK
+[[0][1/3][2/3][1]]->[A]
+[[0,0,0,0][1/3,0,0,0][~1/3,1,0,0][1,~1,1,0]]->[B]
+[[1/8,3/8,3/8,1/8]]->[C]
+Goto K
 
-Lbl OK
 
-" STUFE ERMITTELN UND k-VEKTOR IN [J] INITIALISIEREN
-dim([A])->L6
-L6->dim([J])
-
-" MODUS WAEHLEN
-Lbl MO
+" Butcher-Tableau kontrollieren
+Lbl K
+Disp "Vektor a="
+Pause [A]>Frac
 ClrHome
-0->F
-Menu("Modus?","Runge-Kutta",RK,"RK+Fehlberg",FE,"Konvergenzord.",KO,"Ende",EN)
+Disp "Matrix b="
+Pause [B]>Frac
+ClrHome
+Disp "Vektor c="
+Pause [C]>Frac
+ClrHome
+Disp "Vektor d="
+Pause [D]>Frac
+Goto MS
 
-" FEHLBERG-FLAG SETZEN
-Lbl FE
-1->F
 
-" STARTWERTE BESTIMMEN
-Lbl RK
-Input "Start tsmall0=",A
-Input "Start ysmall0=",B
-Input "Schritt h=",H
-Input "Schritte m=",M
+" Stufe ermitteln und k-Vektor initialisieren
+Lbl GO
+dim([A])->|LDIM:|LDIM(1)->S
+[A]->[J]
+
+
+Disp "Anfangswert:"
+Input "tsmall0=",A
+Input "ysmall0=y(tsmall0)=",B
 ClrHome
 
-" ERSTES k1 BESTIMMEN
+
+" Funktion fuer erstes k1 auswerten
 A->T
 B->Y
-{Y1}->[J](1,1)
+{Y1}->K
 
-" ITERATIONSSCHLEIFE
-For(N,1,M)
 
-	" Indexsymbole bestimmen
-	If N=1
-	Then
-		"small0"->Str8
-		"small1"->Str9
-	End
-	If N=2
-	Then
-		"small1"->Str8
-		"small2"->Str9
-	End
-	If N=3
-	Then
-		"small2"->Str8
-		"small3"->Str9
-	End
-	If N=4
-	Then
-		"small3"->Str8
-		"small4"->Str9
-	End
-	If N=5
-	Then
-		"small4"->Str8
-		"small5"->Str9
-	End
+" Indizes bestimmen
+0->N
+"small0"->Str9
+Lbl S
+N+1->N
+Str9->Str8
+If N=1:"small1"->Str9
+If N=2:"small2"->Str9
+If N=3:"small3"->Str9
+If N=4:"small4"->Str9
+If N=5:"small5"->Str9
 
-	" k1 AUSGEBEN
-	Disp "ksmall1=f(t"+Str8+",y"+Str8+")=",[J](1,1)>Frac
+
+Disp "Schrittweite:"
+Input "h=",H
+ClrHome
+
+
+" Startwerte und k1 uebernehmen
+T->A
+Y->B
+K->[J](1,1)
+Disp "ksmall1=f(t"+Str8+",y"+Str8+")=",K>Frac
+Pause 
+ClrHome
+
+
+" k-Vektor fuellen
+"small2"->Str0
+For(I,2,S)
+
+	
+	" t fuer Funktionsauswertung bestimmen
+	A+H[A](I,1)->T
+	Disp "t=t"+Str8+"+a"+Str0+"h=",T
+
+	
+	" y fuer Funktionsauswertung bestimmen
+	B->Y
+	For(J,1,I-1)
+		Y+H[B](I,J)[J](J,1)->Y
+	End
+	Disp "y=y"+Str8+"+hSigmab"+Str0+"k=",Y>Frac
+
+	
+	" Funktion auswerten
+	{Y1}->[J](I,1)
+	Disp "k"+Str0+"=f(t,y)=",[J](I,1)>Frac
 	Pause 
 	ClrHome
 
-	" k-VEKTOR FUELLEN
-	For(I,2,L6(1))
 
-		" Indexsymbol bestimmen
-		If I=1:"small1"->Str0
-		If I=2:"small2"->Str0
-		If I=3:"small3"->Str0
-		If I=4:"small4"->Str0
-		If I=5:"small5"->Str0
-
-		" t-WERT FUER FUNKTIONSAUSWERTUNG BESTIMMEN
-		A+H[A](I,1)->T
-		Disp "t=t"+Str8+"+a"+Str0+"h=",T
-
-		" y-WERT FUER FUNKTIONSAUSWERTUNG BESTIMMEN
-		B->Y
-		For(J,1,I-1)
-			Y+H[B](I,J)[J](J,1)->Y
-		End
-		Disp "y=y"+Str8+"+hSigmab"+Str0+"k=",Y>Frac
-
-		" FUNKTIONSAUSWERTUNG
-		{Y1}->[J](I,1)
-		Disp "k"+Str0+"=f(t,y)=",[J](I,1)>Frac
-		Pause 
-		ClrHome
-	End
-
-	" VERFAHRENSFUNKTION BESTIMMEN
-	det([C][J])->P
-	Disp "Phi=ck=",P>Frac
-
-	" NAECHSTER ZEITSCHRITT
-	A+H->T
-	B+HP->Y
-	{Y1}->K
-	Disp "t"+Str9+"=t"+Str8+"+h=",T
-	Disp "y"+Str9+"=y"+Str8+"+hPhi=",Y>Frac
-	Pause 
-	ClrHome
-
-	" FEHLBERG-TRICK
-	If F=1
-	Then
-		Disp "Fehlberg-Trick:"
-		det([D]augment([J]^^T,[[K]])^^T)->P
-		B+HP->Z
-		Disp "Phi=dk=",P>Frac
-		Disp "z"+Str9+"=y"+Str8+"+hPhi=",Z>Frac
-		Disp "e=|1-z"+Str9+"/y"+Str9+"|",abs(1-Z/Y)>Frac
-		Pause 
-		ClrHome
-	End
-
-	" STARTWERT UND k1 UPDATEN
-	T->A
-	Y->B
-	K->[J](1,1)
+	" Naechsten Index bestimmen
+	If I=2:"small3"->Str0
+	If I=3:"small4"->Str0
+	If I=4:"small5"->Str0
+	If I=5:"small6"->Str0
 End
-Goto MO
 
-" EINHEITSVEKTOR UND [H] = diag(a) INITIALISIEREN
-Lbl KO
+
+" Phi bestimmen
+det([C][J])->P
+Disp "Phi=ck=",P>Frac
+
+
+" Startwerte und k1 aktualisieren
+A+H->T
+B+HP->Y
+{Y1}->K
+Disp "t"+Str9+"=t"+Str8+"+h=",T
+Disp "y"+Str9+"=y"+Str8+"+hPhi=",Y>Frac
+
+
+Lbl MA
+Pause 
+ClrHome
+Menu("Aktion?","fortschreiten",S,"Fehlberg-Trick",FT,"p(c) bestimmen",P,"beenden",E)
+
+
+Lbl FT
+Disp "k"+Str0+"=f(t"+Str9+",y"+Str9+")=",K
+det([D]augment([J]^^T,[[K]])^^T)->P
+B+HP->Z
+Disp "Phi=dk=",P>Frac
+Disp "z"+Str9+"=y"+Str8+"+hPhi=",Z>Frac
+Pause 
+ClrHome
+Disp "Falls p(d)<p(c):","e=|1-z"+Str9+"/y"+Str9+"|",abs(1-Z/Y)>Frac,""
+Disp "Falls p(d)>p(c):","e=|1-y"+Str9+"/z"+Str9+"|",abs(1-Y/Z)>Frac
+Goto MA
+
+
+" Einheitsvektor und A = diag(a) initialisieren
+Lbl P
 [A]->[I]
 Fill(1,[I])
 dim([B])->dim([H])
 Fill(0,[H])
-For(I,1,L6(1))
+For(I,1,S)
 	[A](I,1)->[H](I,I)
 End
 
-" PRUEFE p=1
+
+" Teste p=1
 det([C][I])->C
 Disp "Sigmac=",C>Frac
-If C!=1
-Then
-	Pause "!=1, p!=1"
-	Goto MO
+If C!=1:Then
+	Disp "!=1, p!=1"
+	Goto MA
 End
 Disp "p=1 OK",""
 
-" PRUEFE p=2
+
+" Teste p=2
 det([C][A])->C
 Disp "Sigmaac=",C>Frac
-If C!=.5
-Then
-	Pause "!=1/2, p!=2" 
-	Goto MO
+If C!=.5:Then
+	Disp "!=1/2, p!=2"
+	Goto MA
 End
 Pause "p=2 OK"
 ClrHome
 
-" PRUEFE p=3
+
+" Teste p=3
 det([C][H]^2[I])->C
 Disp "Sigmaa^^2c=",C>Frac
-If C!=1/3
-Then
-	Pause "!=1/3, p!=3"
-	Goto MO
+If C!=1/3:Then
+	Disp "!=1/3, p!=3"
+	Goto MA
 End
 det([C][B][A])->C
 Disp "SigmaSigmacba=",C>Frac
-If C!=1/6
-Then
-	Pause "!=1/6, p!=3"
-	Goto MO
+If C!=1/6:Then
+	Disp "!=1/6, p!=3"
+	Goto MA
 End
 Pause "p=3 OK"
 ClrHome
 
-" PRUEFE p=4
+
+" Teste p=4
 det([C][H]^3[I])->C
 Disp "Sigmaa^^3c=",C>Frac
-If C!=1/4
-Then
-	Pause "!=1/4, p!=4"
-	Goto MO
+If C!=1/4:Then
+	Disp "!=1/4, p!=4"
+	Goto MA
 End
 det([C][H][B][H][I])->C
 Disp "SigmaSigmacaba=",C>Frac
-If C!=1/8
-Then
-	Pause "!=1/8, p!=4"
-	Goto MO
+If C!=1/8:Then
+	Disp "!=1/8, p!=4"
+	Goto MA
 End
 Pause "Weiter..."
 ClrHome
 det([C][B][H]^2[I])->C
 Disp "SigmaSigmacba^^2=",C>Frac
-If C!=1/12
-Then
-	Pause "!=1/12, p!=4"
-	Goto MO
+If C!=1/12:Then
+	Disp "!=1/12, p!=4"
+	Goto MA
 End
 det([C][B]^2[A])->C
 Disp "SigmaSigmaSigmacbba=",C>Frac
-If C!=1/24
-Then
-	Pause "!=1/24, p!=4" 
-	Goto MO
+If C!=1/24:Then
+	Disp "!=1/24, p!=4" 
+	Goto MA
 End
-Pause "p=4 OK"
-Goto MO
+Disp "p=4 OK"
+Goto MA
 
-" ENDE
-Lbl EN
+
+Lbl E

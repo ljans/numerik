@@ -13,13 +13,14 @@ Verfügbar sind die folgenden Verfahren, sortiert nach Anwendungsbereich:
 - Iterative Lösung von (nicht-linearen) Gleichungen
   - **[Fixpunktiteration](FPI)**
 - Iterative Lösung gewöhnlicher Differenzialgleichungen
-  - **[Runge-Kutta-Fehlberg-Verfahren](RKF)** (für Anfangswertprobleme)
+  - **[Runge-Kutta-Verfahren](RKF)** (für Anfangswertprobleme)
     - Explizites Euler-Verfahren
     - Verfahren von Heun
-    - Verbessertes Euler-Verfahren
-    - Verfahren von Ralston
-    - Klassisches Runge-Kutta-Verfahren
+    - Explizite Mittelpunktsregel (verbessertes Euler-Verfahren)
     - Verfahren von Bogacki-Shampine (ode23)
+    - "Strong Stability Preserving" Runge-Kutta-Verfahren
+    - Klassisches Runge-Kutta-Verfahren
+    - 3/8-Regel
     - Jedes weitere explizite Verfahren unter Angabe seines Butcher-Tableaus
 - Sonstiges
   - **[Bestimmung von Matrix-Eigenwerten](EIGNWERT)**
