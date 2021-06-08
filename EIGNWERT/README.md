@@ -13,9 +13,9 @@ Feld  | Belegung
 ## Ablauf
 Folgende Schritte werden für alle *n* Eigenwerte wiederholt:
 
-- Der Graph des charakteristischen Polynoms wird angezeigt.
-- Das Programm wartet, bis der Cursor in die Nähe einer Nullstelle bewegt und der Punkt mit <kbd>ENTER</kbd> bestätigt wird.
-- Der entsprechende Eigenwert wird ausgegeben.
+1. Der Graph des charakteristischen Polynoms wird angezeigt.
+2. Das Programm wartet, bis der Cursor in die Nähe einer Nullstelle bewegt und der Punkt mit <kbd>ENTER</kbd> bestätigt wird.
+3. Der entsprechende Eigenwert wird ausgegeben.
 
 
 ## Beispielsetup
@@ -30,4 +30,4 @@ Feld   | Belegung
 `N`    | Dimension *n*
 `[I]`  | Einheitsmatrix
 `Y₀`   | Charakteristisches Polynom
-`∟DIM` | Dimensionsliste `{N,N}`
+`∟DIM` | Dimensionsliste {*n,n*}

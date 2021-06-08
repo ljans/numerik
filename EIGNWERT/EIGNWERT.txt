@@ -1,32 +1,42 @@
+Lbl MS
 ClrHome
-Menu("Setup","A eingeben",EA,"Starten",GO)
+Menu("Setup","A eingeben",IA,"Starten",GO)
 
-" A EINGEBEN
-Lbl EA
-Input "A=",[A]
 
-" DIMENSION BESTIMMEN UND PASSENDE EINHEITSMATRIX ERZEUGEN
+Lbl IA
+Input "Matrix A=",[A]
+ClrHome
+Disp "Matrix A="
+Pause [A]>Frac
+Goto MS
+
+
+" Dimension bestimmen und Einheitsmatrix initialisieren
 Lbl GO
 dim([A])->|LDIM:|LDIM(1)->N
 identity(N)->[I]
 
-" CHARAKTERISTISCHES POLYNOM ANZEIGEN
+
+" Charakteristisches Polynom anzeigen
 String>Equ("det([A]-X[I])",{Y0})
 FnOff 
 FnOn 0
 
-" ZAEHLER INITIALISIEREN
+
+" Eigenwerte zaehlen
 0->K
 Lbl RE
+K+1->K
 ClrHome
 
-" TIPP EINGEBEN UND GLEICHUNG LOESEN
+
+" Tipp eingeben und Gleichung loesen
 Input 
 solve({Y0},X,X,{~|E2,|E2})->L
 Disp "lambda=",L>Frac
 
-" WIEDERHOLEN, BIS ALLE EIGENWERTE GEFUNDEN WURDEN
-K+1->K
+
+" Wiederholen, bis n Eigenwerte gefunden wurden
 If K<N:Then
 	Pause 
 	Goto RE
