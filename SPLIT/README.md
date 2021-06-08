@@ -29,7 +29,7 @@ Feld  | Belegung
 
 
 ### Aktion: iterieren
-- Die Berechnung der nächsten Iterierten *x<sub>k+1</sub> = Mx<sub>k</sub> + Nb* wird ausgegeben.
+- Die Berechnung der nächsten Iterierten *x<sub>k</sub> = Mx<sub>k-1</sub> + Nb* wird ausgegeben.
 
 
 ### Aktion: a-priori
@@ -38,15 +38,11 @@ Feld  | Belegung
 
 
 ### Aktion: a-posteriori
-- Eine Fehlerschätzung für *||x<sub>k</sub> - x&ast;||* auf Grundlage der letzten beiden Iterierten *x<sub>k</sub>* und *x<sub>k-1</sub>* wird ausgegeben.
-
-
-### Aktion: wechseln
-- Ermöglicht, das Verfahren zwischen Iterationsschritten zu wechseln.
+- Eine Fehlerschätzung für *||x<sub>k</sub> - x&ast;||* auf Grundlage der letzten beiden Werte *x<sub>k</sub>* und *x<sub>k-1</sub>* wird ausgegeben.
 
 
 ### Aktion: beenden
-- Beendet das Programm
+- Das Programm wird beendet.
 
 
 ## Beispielsetup
@@ -60,7 +56,7 @@ Feld  | Belegung
 Feld   | Belegung
 ------ | --------
 `C`    | Zwischensumme
-`D`    | Zwischenrechnungen
+`D`    | Zwischenergebnis
 `E`    | Toleranz *&epsilon;*
 `I`    | Schleifenindex
 `J`    | Schleifenindex
@@ -70,13 +66,13 @@ Feld   | Belegung
 `S`    | Spaltensumme
 `W`    | Relaxationsparameter *&omega;*
 `Z`    | Zeilensumme
-`[D]`  | Aktuelle Iterierte *x<sub>k</sub>*
-`[E]`  | Vorherige Iterierte *x<sub>k-1</sub>*
+`[D]`  | Wert *x<sub>k</sub>*
+`[E]`  | Wert *x<sub>k-1</sub>*
 `[F]`  | Iterationsmatrix *M*
 `[G]`  | Matrix *N*
-`[H]`  | Diagonalmatrix *D*
-`[I]`  | Linke obere Dreiecksmatrix *L*
-`[J]`  | Rechte obere Dreiecksmatrix *R*
-`Str9` | Vorheriger Index *<sub>k-1</sub>*
-`Str0` | Aktueller Index *<sub>k</sub>*
+`[H]`  | Matrix *D*
+`[I]`  | Matrix *L*
+`[J]`  | Matrix *R*
+`Str9` | Index *<sub>k-1</sub>*
+`Str0` | Index *<sub>k</sub>*
 `∟DIM` | Dimensionsliste {*n,n*}
