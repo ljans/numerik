@@ -62,6 +62,7 @@ Die Butcher-Tableaus der folgenden Verfahren sind bereits hinterlegt und können
 
 
 ## Beispielsetup
+- f(T,Y)=Y^2e^(-T)
 - a=`[[0][.5][.75]]`
 - B=`[[0,0,0][.5,0,0][0,.75,0]]`
 - c=`[[2/9,1/3,4/9]]`
