@@ -14,10 +14,10 @@ Feld  | Belegung
 
 ## Ablauf
 Am Anfang jedes Iterationsschritts fordert das Programm zur Wahl zwischen gewöhnlichem und konjugiertem Gradientenverfahren auf und führt dann durch die folgenden Berechnungen:
-- Residuum
-- Suchrichtung
-- Line search
-- Neue Iterierte
+1. Residuum
+1. Suchrichtung
+1. Line search
+1. Neue Iterierte
 
 
 ## Beispielsetup
@@ -40,7 +40,7 @@ Feld   | Belegung
 `[H]`  | Produkt von Matrix *A* und Suchrichtung
 `[I]`  | Suchrichtung *d*
 `[J]`  | Residuum *r*
-`Str8` | Vorheriger Index *<sub>k-1</sub>*
-`Str9` | Aktueller Index *<sub>k</sub>*
-`Str0` | Nächster Index *<sub>k+1</sub>*
+`Str8` | Index *<sub>k-2</sub>*
+`Str9` | Index *<sub>k-1</sub>*
+`Str0` | Index *<sub>k</sub>*
 `∟DIM` | Dimensionsliste {*n,n*}

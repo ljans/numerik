@@ -5,37 +5,53 @@ Menu("Setup","A eingeben",IA,"b eingeben",IB,"xsmall0 eingeben",IC,"starten",GO)
 
 Lbl IA
 Input "Matrix A=",[A]
+ClrHome
+Disp "Matrix A="
+Pause [A]>Frac
 Goto MS
 
 
 Lbl IB
 Input "Rechte Seite b=",[B]
+ClrHome
+Disp "Rechte Seite b="
+Pause [B]>Frac
 Goto MS
 
 
 Lbl IC
 Input "Startwert xsmall0=",[C]
+ClrHome
+Disp "Startwert xsmall0="
+Pause [C]>Frac
 Goto MS
 
 
-" Arbeitsvektor und Dimension
+" Arbeitsvektor und Dimension initialisieren
 Lbl GO
 [C]->[D]
 dim([D])->|LDIM:|LDIM(1)->N
 
 
-" Nullvektor
+" Nullvektor initialisieren
 [D]->[G]
 Fill(0,[G])
 
 
-" Startindizes
+" Indizes bestimmen
 0->K
-"small0"->Str9
-"small1"->Str0
-
-
+"small0"->Str0
 Lbl IT
+K+1->K
+Str9->Str8
+Str0->Str9
+If K=1:"small1"->Str0
+If K=2:"small2"->Str0
+If K=3:"small3"->Str0
+If K=4:"small4"->Str0
+If K=5:"small5"->Str0
+
+
 0->C
 Menu("Verfahren?","konjugiert",C,"gewoehnlich",G,"beenden",E)
 Lbl C
@@ -44,7 +60,7 @@ Lbl G
 
 
 Disp "Residuum:"
-If K=0:Then
+If K=1:Then
 	[B]-[A][D]->[J]
 	Disp "r"+Str9+"=b-Ax"+Str9+"="
 Else
@@ -64,7 +80,7 @@ ClrHome
 
 
 If C=1:Disp "Suchrichtung:"
-If K=0:Then
+If K=1:Then
 	[J]->[I]
 	If C=1:Disp "d"+Str0+"=r"+Str9+"="
 Else
@@ -94,16 +110,7 @@ If C=1:Disp "x"+Str0+"=x"+Str9+"+alpha"+Str0+"d"+Str0+"="
 If C=0:Disp "x"+Str0+"=x"+Str9+"+lambda"+Str9+"r"+Str9+"="
 Pause [D]
 ClrHome
-
-
-" Naechster Schritt
-K+1->K
-Str9->Str8
-Str0->Str9
-If K=1:"small2"->Str0
-If K=2:"small3"->Str0
-If K=3:"small4"->Str0
-If K=4:"small5"->Str0
-If K>4:""->Str0
 Goto IT
+
+
 Lbl E
