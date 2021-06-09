@@ -1,5 +1,5 @@
 # RKF
-Explizite Runge-Kutta-Verfahren zur Lösung von Differentialgleichungen der Form *y'(t) = f(t,y(t))* mit Anfangswert *y(t<sub>0</sub>) = y<sub>0</sub>*.
+Explizite Runge-Kutta-Verfahren zur iterativen Lösung von Differenzialgleichungen der Form *y'(t) = f(t,y(t))* mit Anfangswert *y(t<sub>0</sub>) = y<sub>0</sub>*.
 Grundlage der Verfahren bildet ihr jeweiliges Butcher-Tableau, das in einen Spaltenvektor *a*, die Matrix *B* und den Zeilenvektor *c* aufgeteilt wird.
 Für den Fehlberg-Trick kommt optional noch ein weiterer Zeilenvektor *d* hinzu.
 
