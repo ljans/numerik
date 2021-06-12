@@ -2,6 +2,11 @@
 In diesem Projekt werden Programme für die Taschenrechner TI-83 Plus und TI-84 Plus zur Lösung numerischer Fragestellungen gesammelt.
 Verfügbar sind die folgenden Verfahren, sortiert nach Anwendungsbereich:
 
+- Direkte Lösung linearer Gleichungssysteme
+  - **[Matrix-Faktorisierungen](FAKTOR)**
+    - LR (Gauß)
+    - LL<sup>T</sup> (Cholesky)
+    - QR (Gauß-Seidel)
 - Iterative Lösung linearer Gleichungssysteme
   - **[Splitting-Verfahren](SPLIT)**
     - Gauß-Seidel / Einzelschritt

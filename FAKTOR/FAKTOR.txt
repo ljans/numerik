@@ -1,0 +1,212 @@
+Lbl MS
+ClrHome
+Menu("Setup","A eingeben",IA,"b eingeben",IB,"starten",GO)
+
+
+Lbl IA
+Input "Matrix A=",[A]
+ClrHome
+Disp "Matrix A="
+Pause [A]>Frac
+Goto MS
+
+
+Lbl IB
+Input "Rechte Seite b=",[B]
+ClrHome
+Disp "Rechte Seite b="
+Pause [B]>Frac
+Goto MS
+
+
+" Dimension und Einheitsmatrix bestimmen
+Lbl GO
+dim([A])->|LDIM:|LDIM(1)->N
+identity(N)->[I]
+
+
+Lbl MZ
+Menu("Faktorisierung?","LR  (Gausharps)",1,"LL^^T (Cholesky)",2,"QR  (GS)",3)
+
+
+" LR (Gausharps)
+Lbl 1
+[A]->[J]
+
+
+" Spalten durchlaufen
+For(J,1,N-1)
+	If J=1:"I"->Str0
+	If J=2:"II"->Str0
+	If J=3:"III"->Str0
+	If J=4:"IV"->Str0
+	If J=5:"V"->Str0
+
+
+	Disp "Umform"+"ungen:",""
+	For(I,J+1,N)
+		If I=2:"II"->Str9
+		If I=3:"III"->Str9
+		If I=4:"IV"->Str9
+		If I=5:"V"->Str9
+
+
+		" [J](I,J) zur Null bringen
+		[J](I,J)/[J](J,J)->[I](I,J)
+		*row+(~[I](I,J),[J],J,I)->[J]
+		Disp Str9+"-"+Str0+"*"
+		Pause [I](I,J)>Frac
+	End
+	ClrHome
+	
+
+	" Zwischenergebnis
+	Disp "L="
+	Pause [I]>Frac
+	ClrHome
+	Disp "R="
+	Pause [J]>Frac
+	ClrHome
+End
+If [I][J]!=[A]:Pause "Fehler: LR!=A"
+
+
+Disp "Vorwaerts:","y=L^^-1b="
+[I]^^-1[B]->[G]
+Pause [G]>Frac
+ClrHome
+Disp "Rueckwaerts:","x=R^^-1y="
+[J]^^-1[G]->[G]
+Pause [G]>Frac
+ClrHome
+Goto E
+
+
+" LL^^T (Cholesky)
+Lbl 2
+[A]->[I]
+For(I,1,N)
+	For(J,1,I)
+		[I](I,J)->S
+		For(K,1,J-1)
+			S-[I](I,K)[I](J,K)->S
+		End
+		If I>J:Then
+			S/[I](J,J)->[I](I,J)
+		Else
+			If S>0:Then
+				sqrt(S)->[I](I,I)
+			Else
+				Pause "A nicht s.p.d."
+				Goto E
+			End
+		End
+	End
+
+	
+	" Rechten oberen Teil ausnullen
+	For(J,I+1,N)
+		0->[I](I,J)
+	End
+End
+Disp "L="
+Pause [I]>Frac
+ClrHome
+If [I][I]^^T!=[A]:Pause "Fehler: LL^^T!=A"
+
+
+Disp "Vorwaerts:","y=L^^-1b="
+[I]^^-1[B]->[G]
+Pause [G]>Frac
+ClrHome
+Disp "Rueckwaerts:","x=(L^^T)^^-1y="
+([I]^^T)^^-1[G]->[G]
+Pause [G]>Frac
+ClrHome
+Goto E
+
+
+" QR (Gram-Schmidt)
+Lbl 3
+[A]^^T->[J]
+
+
+" Zeilen durchlaufen
+For(I,1,N)
+	If I=1:"I"->Str9
+	If I=2:"II"->Str9
+	If I=3:"III"->Str9
+	If I=4:"IV"->Str9
+	If I=5:"V"->Str9
+
+
+	If I>1:Disp "Orthogonalisiere",""
+	For(K,1,I-1)
+		If K=1:"I"->Str0
+		If K=2:"II"->Str0
+		If K=3:"III"->Str0
+		If K=4:"IV"->Str0
+
+		
+		" Skalarprodukt abziehen
+		0->[I](I,K)
+		For(J,1,N)
+			[I](I,K)+[J](K,J)[J](I,J)->[I](I,K)
+		End
+		*row+(~[I](I,K),[J],K,I)->[J]
+		Pause Str9+"-<"+Str0+","+Str9+">"+Str0
+	End
+	ClrHome
+
+
+	" Zwischenergebnis
+	Disp "R^^T="
+	Pause [I]>Frac
+	ClrHome
+	Disp "Q^^T="
+	Pause [J]>Frac
+	ClrHome
+	
+	
+	Disp "Normiere",""
+	0->S
+	For(J,1,N)
+		S+[J](I,J)^2->S
+	End
+	sqrt(S)->[I](I,I)
+	*row(1/[I](I,I),[J],I)->[J]
+	Pause Str9+"/norm("+Str9+")"
+	ClrHome
+
+
+	" Zwischenergebnis
+	Disp "R^^T="
+	Pause [I]>Frac
+	ClrHome
+	Disp "Q^^T="
+	Pause [J]>Frac
+	ClrHome
+End
+
+
+" Endergebnis
+Disp "Q="
+Pause [J]^^T>Frac
+ClrHome
+Disp "R="
+Pause [I]^^T>Frac
+ClrHome
+If [J]^^T[I]^^T!=[A]:Pause "Fehler: QR != A"
+
+
+Disp "Orthogonal:","y=Q^^-1b=Q^^Tb="
+[J][B]->[G]
+Pause [G]>Frac
+ClrHome
+Disp "Rueckwaerts:","x=R^^-1y="
+([I]^^T)^^-1[G]->[G]
+Pause [G]>Frac
+ClrHome
+
+
+Lbl E
