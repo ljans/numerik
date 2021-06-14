@@ -6,7 +6,7 @@ Verfügbar sind die folgenden Verfahren, sortiert nach Anwendungsbereich:
   - **[Matrix-Faktorisierungen](FAKTOR)**
     - LR (Gauß)
     - LL<sup>T</sup> (Cholesky)
-    - QR (Gauß-Seidel)
+    - QR (Gram-Schmidt)
 - Iterative Lösung linearer Gleichungssysteme
   - **[Splitting-Verfahren](SPLIT)**
     - Gauß-Seidel / Einzelschritt
