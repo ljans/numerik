@@ -25,10 +25,11 @@ Feld   | Belegung
 ------ | -------
 `I`    | Zeilenindex
 `J`    | Spaltenindex
-`K`    | Zeilenindex
+`K`    | Zusätzlicher Index
 `N`    | Dimension *n*
 `S`    | Zwischensumme
 `[G]`  | Lösungsvektor
+`[H]`  | Permutationsmatrix
 `[I]`  | Arbeitsmatrix
 `[J]`  | Arbeitsmatrix
 `Str9` | Gleichungsindex

@@ -32,6 +32,7 @@ Menu("Faktorisierung?","LR  (Gausharps)",1,"LL^^T (Cholesky)",2,"QR  (GS)",3)
 " LR (Gausharps)
 Lbl 1
 [A]->[J]
+identity(N)->[H]
 
 
 " Spalten durchlaufen
@@ -41,38 +42,73 @@ For(J,1,N-1)
 	If J=3:"III"->Str0
 	If J=4:"IV"->Str0
 	If J=5:"V"->Str0
-
-
-	Disp "Umform"+"ungen:",""
-	For(I,J+1,N)
+	
+	
+	" Zwischenergebnis
+	Disp "Aktuelles L="
+	Pause [I]>Frac
+	ClrHome
+	Disp "Aktuelles R="
+	Pause [J]>Frac
+	ClrHome
+	
+	
+	J->I
+	If [J](J,J)=0:Then
+		Disp "Pivotisierung:",""
+		For(K,J+1,N)
+			If abs([J](K,J))>abs([J](I,J)):K->I
+		End
 		If I=2:"II"->Str9
 		If I=3:"III"->Str9
 		If I=4:"IV"->Str9
 		If I=5:"V"->Str9
+		Pause "Tausche "+Str0+"[<|][|>]"+Str9
+		rowSwap([H],J,I)->[H]
+		rowSwap([I],J,I)->[I]
+		rowSwap([J],J,I)->[J]
+		rowSwap([I]^^T,J,I)^^T->[I]
+		ClrHome
+	End
 
 
-		" [J](I,J) zur Null bringen
-		[J](I,J)/[J](J,J)->[I](I,J)
-		*row+(~[I](I,J),[J],J,I)->[J]
-		Disp Str9+"-"+Str0+"*"
-		Pause [I](I,J)>Frac
+	Disp "Umform"+"ungen:",""
+	For(I,J+1,N)
+		If [J](I,J)!=0:Then
+			If I=2:"II"->Str9
+			If I=3:"III"->Str9
+			If I=4:"IV"->Str9
+			If I=5:"V"->Str9
+
+
+			" [J](I,J) zur Null bringen
+			[J](I,J)/[J](J,J)->[I](I,J)
+			*row+(~[I](I,J),[J],J,I)->[J]
+			Disp Str9+"-"+Str0+"*"
+			Pause [I](I,J)>Frac
+		End
 	End
 	ClrHome
-	
+End
 
-	" Zwischenergebnis
-	Disp "L="
-	Pause [I]>Frac
-	ClrHome
-	Disp "R="
-	Pause [J]>Frac
+
+" Endergebnis
+Disp "Fertiges L="
+Pause [I]>Frac
+ClrHome
+Disp "Fertiges R="
+Pause [J]>Frac
+ClrHome
+If [H]!=identity(N):Then
+	Disp "Perm"+"utation P="
+	Pause [H]
 	ClrHome
 End
-If [I][J]!=[A]:Pause "Fehler: LR!=A"
+If [I][J]!=[H][A]:Pause "Fehler: LR!=PA"
 
 
-Disp "Vorwaerts:","y=L^^-1b="
-[I]^^-1[B]->[G]
+Disp "Vorwaerts:","y=L^^-1Pb="
+[I]^^-1[H][B]->[G]
 Pause [G]>Frac
 ClrHome
 Disp "Rueckwaerts:","x=R^^-1y="
