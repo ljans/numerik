@@ -27,5 +27,6 @@ Verfügbar sind die folgenden Verfahren, sortiert nach Anwendungsbereich:
     - Klassisches Runge-Kutta-Verfahren
     - 3/8-Regel
     - Jedes weitere Verfahren unter Angabe seines Butcher-Tableaus
+  - **[Explizite lineare Mehrschrittmethoden](LMM)**
 - Sonstiges
   - **[Bestimmung von Matrix-Eigenwerten](EIGNWERT)**
