@@ -92,7 +92,8 @@ While 1=1
 	" alpha-Summe
 	0->S
 	For(J,1,M+1)
-		S+J^P[H](J,1)->S
+		If P=0:S+[H](J,1)->S
+		If P>0:S+(J-1)^P[H](J,1)->S
 	End
 	If P=0:Disp "Sigmaalpha="
 	If P=1:Disp "Sigmalalpha="
@@ -112,7 +113,8 @@ While 1=1
 		" beta-Summe
 		0->R
 		For(J,1,M)
-			R+PJ^(P-1)[I](J,1)->R
+			If P=1:R+P[I](J,1)->R
+			If P>1:R+P(J-1)^(P-1)[I](J,1)->R
 		End
 		If P=1:Disp "qSigmabeta="
 		If P=2:Disp "qSigmalbeta="
