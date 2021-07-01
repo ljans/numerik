@@ -112,10 +112,12 @@ Pause [D]>Frac
 Goto MS
 
 
-" Stufe ermitteln und k-Vektor initialisieren
+" Stufe ermitteln, k-Vektor und Einheitsvektor initialisieren
 Lbl GO
 dim([A])->|LDIM:|LDIM(1)->S
 [A]->[J]
+[A]->[I]
+Fill(1,[I])
 
 
 Disp "Anfangswert:"
@@ -206,7 +208,7 @@ Disp "y"+Str9+"=y"+Str8+"+hPhi=",Y>Frac
 Lbl MA
 Pause 
 ClrHome
-Menu("Aktion?","fortschreiten",S,"Fehlberg-Trick",FT,"p(c) bestimmen",P,"beenden",E)
+Menu("Aktion?","fortschreiten",S,"Fehlberg-Trick",FT,"Konsistenzord.",P,"Stabilitaet",ST,"beenden",E)
 
 
 Lbl FT
@@ -222,10 +224,8 @@ Disp "Falls p(d)>p(c):","e=|1-y"+Str9+"/z"+Str9+"|",abs(1-Y/Z)>Frac
 Goto MA
 
 
-" Einheitsvektor und A = diag(a) initialisieren
+" A = diag(a) initialisieren
 Lbl P
-[A]->[I]
-Fill(1,[I])
 dim([B])->dim([H])
 Fill(0,[H])
 For(I,1,S)
@@ -300,6 +300,13 @@ If C!=1/24:Then
 End
 Disp "p=4 OK"
 Goto MA
+
+
+Lbl ST
+String>Equ("1+det(X[C]*(identity(S)-X[B])^^-1[I])",{Y0})
+FnOff 
+FnOn 0
+DispGraph
 
 
 Lbl E

@@ -57,8 +57,12 @@ Die Butcher-Tableaus der folgenden Verfahren sind bereits hinterlegt und können
 1. Eine Fehlerschätzung auf Grundlage von *y<sub>n+1</sub>* und *z<sub>n+1</sub>* wird ausgegeben.
 
 
-### Aktion: p(c) bestimmen
+### Aktion: Konsistenzord.
 1. Die Prüfung der Konvergenzordnung *p = 1* bis *p = 4* für das Verfahren zum Vektor *c* wird ausgegeben.
+
+
+### Aktion: Stabilitaet
+1. Die Stabilitätsfunktion wird geplottet.
 
 
 ## Beispielsetup
@@ -94,5 +98,4 @@ Feld   | Belegung
 `Str0` | Index *<sub>i</sub>*
 `Y₁`   | Funktion *f*(`T`,`Y`)
 `∟DIM` | Dimensionsliste {*s,1*}
-
-
+`Y₀`   | Stabilitätsfunktion
