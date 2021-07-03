@@ -17,6 +17,7 @@ Verfügbar sind die folgenden Verfahren, sortiert nach Anwendungsbereich:
     - Konjugiertes Gradientenverfahren
 - Iterative Lösung von (nicht-linearen) Gleichungen
   - **[Fixpunktiteration](FPI)**
+  - **[Newton-Verfahren](NEWTON)** (im *&reals;<sup>2</sup>*)
 - Iterative Lösung gewöhnlicher Differenzialgleichungen
   - **[Explizite Runge-Kutta-Verfahren](RKF)** (für Anfangswertprobleme)
     - Euler-Verfahren

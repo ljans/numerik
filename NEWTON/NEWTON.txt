@@ -1,0 +1,106 @@
+Lbl MS
+ClrHome
+Menu("Setup","Fsmall1 eingeben",I1,"Fsmall2 eingeben",I2,"xsmall0 eingeben",IX,"starten",GO)
+
+
+Lbl I1
+Input "Fsmall1(X,Y)=",Str0
+String>Equ(Str0,{Y1})
+Goto MS
+
+
+Lbl I2
+Input "Fsmall2(X,Y)=",Str1
+String>Equ(Str1,{Y2})
+Goto MS
+
+
+Lbl IX
+Input "xsmall0=",[A]
+ClrHome
+Disp "xsmall0="
+Pause [A]
+Goto MS
+
+
+" Initialisiere F, F', x und Inizes
+Lbl GO
+{2,1}->dim([H])
+{2,2}->dim([J])
+[A]->[B]
+0->K
+"small0"->Str0
+
+
+Lbl IT
+K+1->K
+Str9->Str8
+Str0->Str9
+If K=1:"small1"->Str0
+If K=2:"small2"->Str0
+If K=3:"small3"->Str0
+If K=4:"small4"->Str0
+If K=5:"small5"->Str0
+
+
+[B](1,1)->X
+[B](2,1)->Y
+{Y1}->[H](1,1)
+{Y2}->[H](2,1)
+Disp "F(x"+Str9+")=",""
+Pause [H]
+ClrHome
+
+
+nDeriv({Y1},X,[B](1,1))->[J](1,1)
+nDeriv({Y1},Y,[B](2,1))->[J](1,2)
+nDeriv({Y2},X,[B](1,1))->[J](2,1)
+nDeriv({Y2},Y,[B](2,1))->[J](2,2)
+Disp "Jacobi F'(x"+Str9+")=",""
+Pause [J]
+ClrHome
+
+
+[J]^^-1->[I]
+Disp "Inverse F'^^-1(x"+Str9+")=",""
+Pause [I]
+ClrHome
+
+
+[I][H]->[G]
+Disp "s"+Str9+"=F'^^-1(x"+Str9+")F(x"+Str9+")=",""
+Pause [G]
+ClrHome
+
+
+S->R
+sqrt([G](1,1)^2+[G](2,1)^2)->S
+Disp "|s"+Str9+"|small2="
+Pause S
+ClrHome
+
+
+[B]-[G]->[B]
+Disp "x"+Str0+"=x"+Str9+"-s"+Str9+"=",""
+Pause [B]
+ClrHome
+
+
+Lbl MA
+If K=1:Menu("Aktion?","iterieren",IT,"beenden",E)
+If K>1:Menu("Aktion?","iterieren",IT,"Konvergenzord.",KO,"beenden",E)
+
+
+Lbl KO
+If S<R:Then
+	Disp "|s"+Str9+"|small2 < |s"+Str8+"|small2 OK","","p=ln|s"+Str9+"|/ln|s"+Str8+"|="
+	Pause ln(S)/ln(R)
+Else
+	Disp "|s"+Str9+"|small2 >= |s"+Str8+"|small2",""
+	Pause "Keine Konvergenz"
+End
+ClrHome
+Goto MA
+
+
+Lbl E
