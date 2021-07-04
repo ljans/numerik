@@ -7,7 +7,7 @@ Folgende Felder können im Voraus belegt oder beim Start des Programms eingegebe
 
 Feld  | Belegung
 ----- | --------
-`Y₁`  | Funktion *&varphi;(X)*
+`Y₁`  | Funktion *&varphi;*(`X`)
 `L`   | *(optional)* Lipschitz-Konstante *L*
 
 
@@ -30,16 +30,16 @@ Feld  | Belegung
 - Eine Fehlerschätzung für *|x<sub>k</sub> - x&ast;|* auf Grundlage der letzten beiden Werte *x<sub>k</sub>* und *x<sub>k-1</sub>* wird berechnet.
 
 
-### Aktion: beschleunigen
-- Das Ergebnis einer Aitken-Beschleunigung auf Grundlage der letzten drei Werte *x<sub>k</sub>* bis *x<sub>k-2</sub>* wird berechnet.
+### Aktion: beschleunigen (ab *k=2*)
+- Die Ergebnis einer Aitken-Beschleunigung wird ausgegeben.
 
 
-### Aktion: L berechnen
-- Die Lipschitz-Konstante wird auf Grundlage der letzten drei Werte *x<sub>k</sub>* bis *x<sub>k-2</sub>* näherungsweise berechnet.
+### Aktion: L berechnen (ab *k=2*)
+- Eine Näherung der Lipschitz-Konstanten wird ausgegeben.
 
 
-### Aktion: p berechnen
-- Die Konvergenzordnung wird auf Grundlage der letzten vier Werte *x<sub>k</sub>* bs *x<sub>k-3</sub>* näherungsweise berechnet.
+### Aktion: p berechnen (ab *k=3*)
+- Eine Näherung der Konvergenzordnung wird ausgegeben.
 
 
 ### Aktion: beenden
@@ -64,4 +64,4 @@ Feld   | Belegung
 `Str8` | Index *<sub>k-2</sub>*
 `Str9` | Index *<sub>k-1</sub>*
 `Str0` | Index *<sub>k</sub>*
-`Y₁`   | Funktion *&varphi;(X)*
+`Y₁`   | Funktion *&varphi;*(`X`)

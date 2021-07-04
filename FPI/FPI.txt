@@ -44,7 +44,9 @@ Disp "x"+Str0+"=Phi(x"+Str9+")=",D
 Lbl MA
 Pause 
 ClrHome
-Menu("Aktion?","iterieren",IT,"a-priori",PR,"a-posteriori",PO,"beschleunigen",AB,"L berechnen",L,"p berechnen",P,"beenden",E)
+If K=1:Menu("Aktion?","iterieren",IT,"a-priori",PR,"a-posteriori",PO,"beenden",E)
+If K=2:Menu("Aktion?","iterieren",IT,"a-priori",PR,"a-posteriori",PO,"beschleunigen",AB,"L berechnen",L,"beenden",E)
+If K>2:Menu("Aktion?","iterieren",IT,"a-priori",PR,"a-posteriori",PO,"beschleunigen",AB,"L berechnen",L,"p berechnen",P,"beenden",E)
 
 
 Lbl PR
