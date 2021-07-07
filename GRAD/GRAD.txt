@@ -38,6 +38,17 @@ dim([D])->|LDIM:|LDIM(1)->N
 Fill(0,[G])
 
 
+Disp "Residuum:"
+[B]-[A][D]->[J]
+Disp "rsmall0=b-Axsmall0=",[J]
+If [J]=[G]:Return
+Pause 
+det([J]^^T[J])->R
+Disp "rhosmall0=<rsmall0,rsmall0>"+"="
+Pause R>Frac
+ClrHome
+
+
 " Indizes bestimmen
 0->K
 "small0"->Str0
@@ -59,37 +70,19 @@ Lbl C
 Lbl G
 
 
-Disp "Residuum:"
-If K=1:Then
-	[B]-[A][D]->[J]
-	Disp "r"+Str9+"=b-Ax"+Str9+"="
-Else
-	[J]-Q[H]->[J]
-	If C=1:Disp "r"+Str9+"=r"+Str8+"-alpha"+Str9+"a"+Str9+"="
-	If C=0:Disp "r"+Str9+"=r"+Str8+"-lambda"+Str8+"a"+Str8+"="
-End
-Pause [J]
-If [J]=[G]:Return
-R->S
-det([J]^^T[J])->R
+If C=0:[J]->[I]
 If C=1:Then
-	Disp "rho"+Str9+"=<r"+Str9+",r"+Str9+">"+"="
-	Pause R>Frac
+	Disp "Suchrichtung:"
+	If K=1:Then
+		[J]->[I]
+		Disp "d"+Str0+"=r"+Str9+"="
+	Else
+		[J]+(R/S)[I]->[I]
+		Disp "d"+Str0+"=r"+Str9+"+(rho"+Str9+"/rho"+Str8+")d"+Str9+"="
+	End
+	Pause [I]
+	ClrHome
 End
-ClrHome
-
-
-If C=1:Disp "Suchrichtung:"
-If K=1:Then
-	[J]->[I]
-	If C=1:Disp "d"+Str0+"=r"+Str9+"="
-Else
-	If C=1:[J]+(R/S)[I]->[I]
-	If C=0:[J]->[I]
-	If C=1:Disp "d"+Str0+"=r"+Str9+"+(rho"+Str9+"/rho"+Str8+")d"+Str9+"="
-End
-If C=1:Pause [I]
-ClrHome
 
 
 Disp "Line search:"
@@ -109,6 +102,20 @@ Disp "Neue Iterierte:"
 If C=1:Disp "x"+Str0+"=x"+Str9+"+alpha"+Str0+"d"+Str0+"="
 If C=0:Disp "x"+Str0+"=x"+Str9+"+lambda"+Str9+"r"+Str9+"="
 Pause [D]
+ClrHome
+
+
+Disp "Residuum:"
+[J]-Q[H]->[J]
+If C=1:Disp "r"+Str0+"=r"+Str9+"-alpha"+Str0+"a"+Str0+"="
+If C=0:Disp "r"+Str0+"=r"+Str9+"-lambda"+Str9+"a"+Str9+"="
+Disp [J]
+If [J]=[G]:Return
+Pause 
+R->S
+det([J]^^T[J])->R
+Disp "rho"+Str0+"=<r"+Str0+",r"+Str0+">"+"="
+Pause R>Frac
 ClrHome
 Goto IT
 

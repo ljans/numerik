@@ -13,11 +13,12 @@ Feld  | Belegung
 
 
 ## Ablauf
-Am Anfang jedes Iterationsschritts fordert das Programm zur Wahl zwischen gewöhnlichem und konjugiertem Gradientenverfahren auf und führt dann durch die folgenden Berechnungen:
-1. Residuum
+Zunächst wird die Berechnung des anfänglichen Residuums *r<sub>0</sub>* ausgegeben.
+Zu Beginn jedes Iterationsschritts fordert das Programm dann zur Wahl zwischen gewöhnlichem oder konjugiertem Gradientenverfahren auf und führt anschließend durch die folgenden Berechnungen:
 1. Suchrichtung
 1. Line search
 1. Neue Iterierte
+1. Neues Residuum
 
 
 ## Beispielsetup
