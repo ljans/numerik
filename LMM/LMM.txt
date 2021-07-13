@@ -141,7 +141,7 @@ For(J,1,M+1)
 	If J=3:"3"->Str1
 	If J=4:"4"->Str1
 	If J=5:"5"->Str1
-	Str0+"+[H]("+Str1+",1)X^"+Str1->Str0
+	Str0+"+[H]("+Str1+",1)X^("+Str1+"-1)"->Str0
 End
 String>Equ(Str0,{Y0})
 FnOff 
